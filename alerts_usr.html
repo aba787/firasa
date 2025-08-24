@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚠️ التنبيهات - لوحة التحكم</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<!-- شريط علوي -->
+<header class="bg-indigo-700 text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold">📊 فراسة - لوحة التحكم</h1>
+  <div><span class="mr-4">مرحباً، <strong>المدير المالي</strong></span></div>
+</header>
+
+<!-- المحتوى -->
+<div class="max-w-7xl mx-auto p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+
+  <!-- القائمة الجانبية -->
+  <aside class="bg-white shadow rounded-xl p-4 col-span-1">
+    <ul class="space-y-4">
+      <li><a href="Dashboard.html" class="block text-gray-700 hover:text-indigo-600">🏠 الصفحة الرئيسية</a></li>
+      <li><a href="add-operation.html" class="block text-gray-700 hover:text-indigo-600">➕ إضافة عملية</a></li>
+      <li><a href="reports_usr.html" class="block text-gray-700 hover:text-indigo-600">📑 التقارير المالية</a></li>
+      <li><a href="alerts_usr.html" class="block text-gray-700 hover:text-indigo-600 font-bold">⚠️ التنبيهات</a></li>
+      <li><a href="accounts_lm.html" class="block text-gray-700 hover:text-indigo-600">💳 الحسابات البنكية</a></li>
+      <li><a href="settings_usr.html" class="block text-gray-700 hover:text-indigo-600">⚙️ الإعدادات</a></li>
+    </ul>
+  </aside>
+
+  <!-- محتوى الصفحة -->
+  <main class="col-span-3 space-y-6">
+
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-bold mb-4">⚠️ التنبيهات</h2>
+      <p>عرض جميع التنبيهات المهمة المتعلقة بالمخزون والمصروفات والتقارير.</p>
+
+      <ul class="space-y-3 mt-4">
+        <li class="p-3 bg-yellow-100 border-r-4 border-yellow-500 rounded">انخفاض المخزون لمنتج X - قد ينفد خلال 48 ساعة</li>
+        <li class="p-3 bg-red-100 border-r-4 border-red-500 rounded">المصروفات الشهرية ارتفعت بنسبة 60% عن المعدل</li>
+        <li class="p-3 bg-green-100 border-r-4 border-green-500 rounded">تم توليد تقرير التدفق النقدي لشهر أغسطس</li>
+      </ul>
+
+    </div>
+
+  </main>
+
+</div>
+
+</body>
+</html>

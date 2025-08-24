@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>خدمة العملاء - FARASAH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <!-- نافبار -->
+  <nav class="bg-white shadow-md">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6">
+      <h1 class="text-2xl font-bold text-indigo-600">FARASAH</h1>
+      <div>
+        <a href="index.html" class="text-gray-600 hover:text-indigo-600 px-4">الرئيسية</a>
+        <a href="support.html" class="text-indigo-600 font-bold px-4">خدمة العملاء</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- البانر -->
+  <header class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16 text-center">
+    <h2 class="text-4xl font-bold mb-4">خدمة العملاء</h2>
+    <p class="text-lg">نحن هنا لمساعدتك والإجابة على جميع استفساراتك</p>
+  </header>
+
+  <!-- محتوى الصفحة -->
+  <main class="container mx-auto py-12 px-6 grid md:grid-cols-2 gap-10">
+
+    <!-- نموذج تواصل -->
+    <div class="bg-white rounded-2xl shadow-lg p-8">
+      <h3 class="text-2xl font-bold text-gray-800 mb-6">راسلنا</h3>
+      <form action="#" method="POST" class="space-y-4">
+        <input type="text" placeholder="الاسم الكامل" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <input type="email" placeholder="البريد الإلكتروني" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <textarea rows="5" placeholder="اكتب رسالتك هنا..." class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-lg font-bold">
+          إرسال الرسالة
+        </button>
+      </form>
+    </div>
+
+    <!-- معلومات التواصل -->
+    <div class="flex flex-col justify-center space-y-6">
+      <div class="bg-white shadow-md rounded-xl p-6">
+        <h4 class="text-xl font-bold text-gray-800 mb-2">📧 البريد الإلكتروني</h4>
+        <p class="text-gray-600">support@farasah.com</p>
+      </div>
+      <div class="bg-white shadow-md rounded-xl p-6">
+        <h4 class="text-xl font-bold text-gray-800 mb-2">📞 الهاتف</h4>
+        <p class="text-gray-600">+966 55 123 4567</p>
+      </div>
+      <div class="bg-white shadow-md rounded-xl p-6">
+        <h4 class="text-xl font-bold text-gray-800 mb-2">⏰ أوقات العمل</h4>
+        <p class="text-gray-600">الأحد - الخميس: 9 صباحاً - 6 مساءً</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- فوتر -->
+  <footer class="bg-gray-100 py-6 text-center text-gray-600">
+    <p>© 2025 FARASAH. جميع الحقوق محفوظة.</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📑 التقارير المالية - لوحة التحكم</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<!-- شريط علوي -->
+<header class="bg-indigo-700 text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold">📊 فراسة - لوحة التحكم</h1>
+  <div><span class="mr-4">مرحباً، <strong>المدير المالي</strong></span></div>
+</header>
+
+<!-- المحتوى -->
+<div class="max-w-7xl mx-auto p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+
+  <!-- القائمة الجانبية -->
+  <aside class="bg-white shadow rounded-xl p-4 col-span-1">
+    <ul class="space-y-4">
+      <li><a href="Dashboard.html" class="block text-gray-700 hover:text-indigo-600">🏠 الصفحة الرئيسية</a></li>
+      <li><a href="add-operation.html" class="block text-gray-700 hover:text-indigo-600">➕ إضافة عملية</a></li>
+      <li><a href="reports_usr.html" class="block text-gray-700 hover:text-indigo-600 font-bold">📑 التقارير المالية</a></li>
+      <li><a href="alerts_usr.html" class="block text-gray-700 hover:text-indigo-600">⚠️ التنبيهات</a></li>
+      <li><a href="accounts_lm.html" class="block text-gray-700 hover:text-indigo-600">💳 الحسابات البنكية</a></li>
+      <li><a href="settings_usr.html" class="block text-gray-700 hover:text-indigo-600">⚙️ الإعدادات</a></li>
+    </ul>
+  </aside>
+
+  <!-- محتوى الصفحة -->
+  <main class="col-span-3 space-y-6">
+
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-bold mb-4">📑 التقارير المالية</h2>
+      <p>عرض جميع التقارير المالية الشهرية والسنوية.</p>
+
+      <table class="w-full text-right mt-4 border-collapse border border-gray-300">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="p-2 border">التقرير</th>
+            <th class="p-2 border">الفترة</th>
+            <th class="p-2 border">المبلغ الإجمالي</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b">
+            <td class="p-2 border">تقرير أغسطس</td>
+            <td class="p-2 border">01/08 - 31/08/2025</td>
+            <td class="p-2 border text-green-600">45,000 ﷼</td>
+          </tr>
+          <tr class="border-b">
+            <td class="p-2 border">تقرير يوليو</td>
+            <td class="p-2 border">01/07 - 31/07/2025</td>
+            <td class="p-2 border text-green-600">50,000 ﷼</td>
+          </tr>
+          <tr>
+            <td class="p-2 border">تقرير يونيو</td>
+            <td class="p-2 border">01/06 - 30/06/2025</td>
+            <td class="p-2 border text-green-600">40,000 ﷼</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+</div>
+
+</body>
+</html>
