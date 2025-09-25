@@ -1,0 +1,559 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📑 التقارير المالية - لوحة التحكم</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<!-- شريط علوي -->
+<header class="bg-indigo-700 text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold">📊 فراسة - لوحة التحكم</h1>
+  <div><span class="mr-4">مرحباً، <strong id="headerUserName">المدير المالي</strong></span></div>
+</header>
+
+<!-- المحتوى -->
+<div class="max-w-7xl mx-auto p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+
+  <!-- القائمة الجانبية -->
+  <aside class="bg-white shadow rounded-xl p-4 col-span-1">
+    <ul class="space-y-4">
+      <li><a href="Dashboard.html" class="block text-gray-700 hover:text-indigo-600">🏠 الصفحة الرئيسية</a></li>
+      <li><a href="add-operation.html" class="block text-gray-700 hover:text-indigo-600">➕ إضافة عملية</a></li>
+      <li><a href="reports_usr.html" class="block text-gray-700 hover:text-indigo-600 font-bold text-indigo-600">📑 التقارير المالية</a></li>
+      <li><a href="alerts_usr.html" class="block text-gray-700 hover:text-indigo-600">⚠️ التنبيهات</a></li>
+      <li><a href="accounts_lm.html" class="block text-gray-700 hover:text-indigo-600">💳 الحسابات البنكية</a></li>
+      <li><a href="settings_usr.html" class="block text-gray-700 hover:text-indigo-600">⚙️ الإعدادات</a></li>
+    </ul>
+  </aside>
+
+  <!-- محتوى الصفحة -->
+  <main class="col-span-3 space-y-6">
+
+    <!-- إحصائيات سريعة -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+        <div class="flex items-center">
+          <div class="text-2xl text-green-600 ml-3">📈</div>
+          <div>
+            <p class="text-sm text-green-600 font-medium">إجمالي الإيرادات</p>
+            <p class="text-xl font-bold text-green-700" id="totalIncome">0.00 ر.س</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-red-50 p-4 rounded-xl border border-red-200">
+        <div class="flex items-center">
+          <div class="text-2xl text-red-600 ml-3">📉</div>
+          <div>
+            <p class="text-sm text-red-600 font-medium">إجمالي المصروفات</p>
+            <p class="text-xl font-bold text-red-700" id="totalExpenses">0.00 ر.س</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+        <div class="flex items-center">
+          <div class="text-2xl text-blue-600 ml-3">💰</div>
+          <div>
+            <p class="text-sm text-blue-600 font-medium">صافي الربح</p>
+            <p class="text-xl font-bold text-blue-700" id="netProfit">0.00 ر.س</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-purple-50 p-4 rounded-xl border border-purple-200">
+        <div class="flex items-center">
+          <div class="text-2xl text-purple-600 ml-3">📊</div>
+          <div>
+            <p class="text-sm text-purple-600 font-medium">عدد العمليات</p>
+            <p class="text-xl font-bold text-purple-700" id="totalOperations">0</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- فلترة التقارير -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h3 class="text-lg font-bold text-gray-800 mb-4">🔍 فلترة التقارير</h3>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">من تاريخ</label>
+          <input type="date" id="dateFrom" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">إلى تاريخ</label>
+          <input type="date" id="dateTo" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">نوع العملية</label>
+          <select id="typeFilter" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+            <option value="">الكل</option>
+            <option value="income">إيراد</option>
+            <option value="expense">مصروف</option>
+          </select>
+        </div>
+        <div class="flex items-end">
+          <button onclick="applyFilters()" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">
+            تطبيق الفلترة
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- جدول التقارير -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-gray-800">📑 التقارير المالية</h2>
+        <div class="space-x-2 space-x-reverse">
+          <button onclick="exportToPDF()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200 text-sm">
+            📄 تصدير PDF
+          </button>
+          <button onclick="exportToCSV()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-200 text-sm">
+            📊 تصدير CSV
+          </button>
+          <button onclick="refreshReports()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200 text-sm">
+            🔄 تحديث
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-right border-collapse">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="p-3 border-b text-gray-700 font-semibold">التاريخ</th>
+              <th class="p-3 border-b text-gray-700 font-semibold">الوصف</th>
+              <th class="p-3 border-b text-gray-700 font-semibold">النوع</th>
+              <th class="p-3 border-b text-gray-700 font-semibold">المبلغ</th>
+              <th class="p-3 border-b text-gray-700 font-semibold">ملاحظات</th>
+            </tr>
+          </thead>
+          <tbody id="reportsTableBody">
+            <tr>
+              <td colspan="5" class="p-8 text-center text-gray-500">
+                <div class="flex flex-col items-center">
+                  <div class="text-4xl mb-2">📋</div>
+                  <p>لا توجد عمليات مالية حتى الآن</p>
+                  <button onclick="window.location.href='add-operation.html'" class="mt-3 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">
+                    إضافة عملية جديدة
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- تقرير شهري تفصيلي -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h3 class="text-lg font-bold text-gray-800 mb-4">📅 التقرير الشهري</h3>
+      <div id="monthlyReport" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <h4 class="font-semibold text-gray-700">الإيرادات الشهرية</h4>
+          <div id="monthlyIncomeChart" class="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
+            لا توجد بيانات إيرادات
+          </div>
+        </div>
+        <div class="space-y-4">
+          <h4 class="font-semibold text-gray-700">المصروفات الشهرية</h4>
+          <div id="monthlyExpenseChart" class="bg-gray-50 p-4 rounded-lg text-center text-gray-500">
+            لا توجد بيانات مصروفات
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- Loading indicator -->
+<div id="loadingIndicator" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg flex items-center space-x-3">
+    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
+    <span class="text-gray-700">جاري تحميل التقارير...</span>
+  </div>
+</div>
+
+<!-- نافذة التصدير -->
+<div id="exportModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-xl max-w-md w-full mx-4">
+    <h3 class="text-lg font-bold mb-4">تصدير التقرير</h3>
+    <p class="text-gray-600 mb-4">اختر تنسيق التصدير:</p>
+    <div class="space-y-3">
+      <button onclick="downloadPDF()" class="w-full bg-red-600 text-white p-3 rounded-lg hover:bg-red-700">
+        📄 تحميل PDF
+      </button>
+      <button onclick="downloadCSV()" class="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700">
+        📊 تحميل CSV
+      </button>
+      <button onclick="closeExportModal()" class="w-full bg-gray-500 text-white p-3 rounded-lg hover:bg-gray-600">
+        إلغاء
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Global variables
+let allOperations = [];
+let filteredOperations = [];
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+    loadUserData();
+    loadReports();
+    setDefaultDates();
+    setupEventListeners();
+});
+
+// Load user data
+function loadUserData() {
+    const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (userData.fullname) {
+        document.getElementById('headerUserName').textContent = userData.fullname;
+    }
+}
+
+// Set default date range (current month)
+function setDefaultDates() {
+    const now = new Date();
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    
+    document.getElementById('dateFrom').value = firstDay.toISOString().split('T')[0];
+    document.getElementById('dateTo').value = lastDay.toISOString().split('T')[0];
+}
+
+// Setup event listeners
+function setupEventListeners() {
+    document.getElementById('dateFrom').addEventListener('change', applyFilters);
+    document.getElementById('dateTo').addEventListener('change', applyFilters);
+    document.getElementById('typeFilter').addEventListener('change', applyFilters);
+}
+
+// Load all operations and generate reports
+function loadReports() {
+    showLoading(true);
+    
+    // Get user-specific operations
+    const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const userKey = userData.email || 'default_user';
+    
+    // First try user-specific operations
+    let operations = JSON.parse(localStorage.getItem(`operations_${userKey}`) || '[]');
+    
+    // If no user-specific operations, check general operations storage
+    if (operations.length === 0) {
+        operations = JSON.parse(localStorage.getItem('operations') || '[]');
+        // If we found operations in general storage, migrate them to user-specific storage
+        if (operations.length > 0) {
+            localStorage.setItem(`operations_${userKey}`, JSON.stringify(operations));
+        }
+    }
+    
+    allOperations = operations;
+    filteredOperations = [...allOperations];
+    
+    updateStatistics();
+    generateReportsTable();
+    generateMonthlyReport();
+    
+    showLoading(false);
+}
+
+// Apply filters to operations
+function applyFilters() {
+    const dateFrom = document.getElementById('dateFrom').value;
+    const dateTo = document.getElementById('dateTo').value;
+    const typeFilter = document.getElementById('typeFilter').value;
+    
+    filteredOperations = allOperations.filter(operation => {
+        let matchesDate = true;
+        let matchesType = true;
+        
+        if (dateFrom && operation.date < dateFrom) matchesDate = false;
+        if (dateTo && operation.date > dateTo) matchesDate = false;
+        if (typeFilter && operation.type !== typeFilter) matchesType = false;
+        
+        return matchesDate && matchesType;
+    });
+    
+    updateStatistics();
+    generateReportsTable();
+    generateMonthlyReport();
+}
+
+// Update statistics cards
+function updateStatistics() {
+    let totalIncome = 0;
+    let totalExpenses = 0;
+    
+    filteredOperations.forEach(operation => {
+        if (operation.type === 'income') {
+            totalIncome += operation.amount;
+        } else if (operation.type === 'expense') {
+            totalExpenses += operation.amount;
+        }
+    });
+    
+    const netProfit = totalIncome - totalExpenses;
+    
+    document.getElementById('totalIncome').textContent = `${totalIncome.toFixed(2)} ر.س`;
+    document.getElementById('totalExpenses').textContent = `${totalExpenses.toFixed(2)} ر.س`;
+    document.getElementById('netProfit').textContent = `${netProfit.toFixed(2)} ر.س`;
+    document.getElementById('totalOperations').textContent = filteredOperations.length;
+    
+    // Color coding for profit/loss
+    const netProfitElement = document.getElementById('netProfit');
+    if (netProfit > 0) {
+        netProfitElement.className = 'text-xl font-bold text-green-700';
+    } else if (netProfit < 0) {
+        netProfitElement.className = 'text-xl font-bold text-red-700';
+    } else {
+        netProfitElement.className = 'text-xl font-bold text-gray-700';
+    }
+}
+
+// Generate reports table
+function generateReportsTable() {
+    const tbody = document.getElementById('reportsTableBody');
+    
+    if (filteredOperations.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" class="p-8 text-center text-gray-500">
+                    <div class="flex flex-col items-center">
+                        <div class="text-4xl mb-2">📋</div>
+                        <p>لا توجد عمليات في الفترة المحددة</p>
+                        <button onclick="window.location.href='add-operation.html'" class="mt-3 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">
+                            إضافة عملية جديدة
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    tbody.innerHTML = filteredOperations
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .map(operation => {
+            const typeText = operation.type === 'income' ? 'إيراد' : 'مصروف';
+            const typeClass = operation.type === 'income' ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50';
+            const amountClass = operation.type === 'income' ? 'text-green-700' : 'text-red-700';
+            
+            return `
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="p-3 border-b text-gray-700">${new Date(operation.date).toLocaleDateString('ar-SA')}</td>
+                    <td class="p-3 border-b text-gray-700">${operation.description}</td>
+                    <td class="p-3 border-b">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium ${typeClass}">
+                            ${typeText}
+                        </span>
+                    </td>
+                    <td class="p-3 border-b font-bold ${amountClass}">${operation.amount.toFixed(2)} ر.س</td>
+                    <td class="p-3 border-b text-gray-600 text-sm">${operation.notes || '-'}</td>
+                </tr>
+            `;
+        }).join('');
+}
+
+// Generate monthly report
+function generateMonthlyReport() {
+    const monthlyData = {};
+    
+    filteredOperations.forEach(operation => {
+        const monthKey = new Date(operation.date).toISOString().slice(0, 7); // YYYY-MM
+        
+        if (!monthlyData[monthKey]) {
+            monthlyData[monthKey] = { income: 0, expense: 0 };
+        }
+        
+        if (operation.type === 'income') {
+            monthlyData[monthKey].income += operation.amount;
+        } else if (operation.type === 'expense') {
+            monthlyData[monthKey].expense += operation.amount;
+        }
+    });
+    
+    // Update income chart
+    const incomeChart = document.getElementById('monthlyIncomeChart');
+    const expenseChart = document.getElementById('monthlyExpenseChart');
+    
+    if (Object.keys(monthlyData).length === 0) {
+        incomeChart.innerHTML = '<p class="text-gray-500">لا توجد بيانات إيرادات</p>';
+        expenseChart.innerHTML = '<p class="text-gray-500">لا توجد بيانات مصروفات</p>';
+        return;
+    }
+    
+    // Simple text-based charts
+    let incomeHtml = '<div class="space-y-2">';
+    let expenseHtml = '<div class="space-y-2">';
+    
+    Object.keys(monthlyData).sort().forEach(month => {
+        const data = monthlyData[month];
+        const monthName = new Date(month + '-01').toLocaleDateString('ar-SA', { year: 'numeric', month: 'long' });
+        
+        incomeHtml += `
+            <div class="flex justify-between items-center p-2 bg-green-50 rounded">
+                <span class="text-sm">${monthName}</span>
+                <span class="font-bold text-green-700">${data.income.toFixed(2)} ر.س</span>
+            </div>
+        `;
+        
+        expenseHtml += `
+            <div class="flex justify-between items-center p-2 bg-red-50 rounded">
+                <span class="text-sm">${monthName}</span>
+                <span class="font-bold text-red-700">${data.expense.toFixed(2)} ر.س</span>
+            </div>
+        `;
+    });
+    
+    incomeHtml += '</div>';
+    expenseHtml += '</div>';
+    
+    incomeChart.innerHTML = incomeHtml;
+    expenseChart.innerHTML = expenseHtml;
+}
+
+// Export functions
+function exportToPDF() {
+    if (typeof jsPDF === 'undefined') {
+        showNotification('مكتبة PDF غير محملة. يرجى المحاولة لاحقاً.', 'error');
+        return;
+    }
+    
+    showNotification('جاري تحضير ملف PDF...', 'info');
+    
+    setTimeout(() => {
+        try {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Add Arabic support (simplified)
+            doc.setFont('helvetica');
+            doc.setFontSize(16);
+            doc.text('Financial Report / التقرير المالي', 20, 20);
+            
+            let y = 40;
+            doc.setFontSize(12);
+            
+            // Add summary
+            const totalIncome = filteredOperations
+                .filter(op => op.type === 'income')
+                .reduce((sum, op) => sum + op.amount, 0);
+            const totalExpenses = filteredOperations
+                .filter(op => op.type === 'expense')
+                .reduce((sum, op) => sum + op.amount, 0);
+            
+            doc.text(`Total Income: ${totalIncome.toFixed(2)} SAR`, 20, y);
+            y += 10;
+            doc.text(`Total Expenses: ${totalExpenses.toFixed(2)} SAR`, 20, y);
+            y += 10;
+            doc.text(`Net Profit: ${(totalIncome - totalExpenses).toFixed(2)} SAR`, 20, y);
+            y += 20;
+            
+            // Add operations
+            doc.text('Operations:', 20, y);
+            y += 10;
+            
+            filteredOperations.slice(0, 30).forEach((operation, index) => {
+                if (y > 250) {
+                    doc.addPage();
+                    y = 20;
+                }
+                
+                const line = `${operation.date} - ${operation.description} - ${operation.amount.toFixed(2)} SAR (${operation.type})`;
+                doc.text(line, 20, y);
+                y += 8;
+            });
+            
+            doc.save('financial-report.pdf');
+            showNotification('تم تحميل ملف PDF بنجاح! ✅', 'success');
+        } catch (error) {
+            showNotification('حدث خطأ في تصدير PDF', 'error');
+            console.error('PDF Export Error:', error);
+        }
+    }, 500);
+}
+
+function exportToCSV() {
+    if (filteredOperations.length === 0) {
+        showNotification('لا توجد بيانات للتصدير', 'warning');
+        return;
+    }
+    
+    const headers = ['التاريخ', 'الوصف', 'النوع', 'المبلغ', 'ملاحظات'];
+    const csvContent = [
+        headers.join(','),
+        ...filteredOperations.map(operation => [
+            operation.date,
+            `"${operation.description}"`,
+            operation.type === 'income' ? 'إيراد' : 'مصروف',
+            operation.amount,
+            `"${operation.notes || ''}"`
+        ].join(','))
+    ].join('\n');
+    
+    const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'financial-report.csv';
+    link.click();
+    
+    showNotification('تم تحميل ملف CSV بنجاح! ✅', 'success');
+}
+
+// Refresh reports
+function refreshReports() {
+    showNotification('جاري تحديث التقارير...', 'info');
+    loadReports();
+    showNotification('تم تحديث التقارير بنجاح! ✅', 'success');
+}
+
+// Utility functions
+function showLoading(show) {
+    const indicator = document.getElementById('loadingIndicator');
+    if (show) {
+        indicator.classList.remove('hidden');
+    } else {
+        indicator.classList.add('hidden');
+    }
+}
+
+function showNotification(message, type = 'info') {
+    // Simple notification system
+    const notification = document.createElement('div');
+    const colors = {
+        'success': 'bg-green-500',
+        'error': 'bg-red-500',
+        'warning': 'bg-yellow-500',
+        'info': 'bg-blue-500'
+    };
+    
+    notification.className = `fixed top-4 right-4 ${colors[type]} text-white p-4 rounded-lg shadow-lg z-50 transition-all duration-300`;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+// Close export modal
+function closeExportModal() {
+    document.getElementById('exportModal').classList.add('hidden');
+}
+</script>
+
+</body>
+</html>

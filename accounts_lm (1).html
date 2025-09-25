@@ -1,0 +1,564 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💳 الحسابات البنكية - لوحة التحكم</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<!-- شريط علوي -->
+<header class="bg-indigo-700 text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold">📊 فراسة - لوحة التحكم</h1>
+  <div class="flex items-center space-x-4 space-x-reverse">
+    <span class="mr-4">مرحباً، <strong id="headerUserName">المدير المالي</strong></span>
+    <button onclick="refreshAccounts()" class="bg-indigo-600 hover:bg-indigo-800 px-3 py-1 rounded text-sm transition-colors">
+      🔄 تحديث
+    </button>
+  </div>
+</header>
+
+<!-- المحتوى -->
+<div class="max-w-7xl mx-auto p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+
+  <!-- القائمة الجانبية -->
+  <aside class="bg-white shadow rounded-xl p-4 col-span-1">
+    <ul class="space-y-4">
+      <li><a href="Dashboard.html" class="block text-gray-700 hover:text-indigo-600 transition-colors">🏠 الصفحة الرئيسية</a></li>
+      <li><a href="add-operation.html" class="block text-gray-700 hover:text-indigo-600 transition-colors">➕ إضافة عملية</a></li>
+      <li><a href="reports_usr.html" class="block text-gray-700 hover:text-indigo-600 transition-colors">📑 التقارير المالية</a></li>
+      <li><a href="alerts_usr.html" class="block text-gray-700 hover:text-indigo-600 transition-colors">⚠️ التنبيهات</a></li>
+      <li><a href="accounts_lm.html" class="block text-indigo-600 hover:text-indigo-800 font-bold bg-indigo-50 px-3 py-2 rounded-lg">💳 الحسابات البنكية</a></li>
+      <li><a href="settings_usr.html" class="block text-gray-700 hover:text-indigo-600 transition-colors">⚙️ الإعدادات</a></li>
+    </ul>
+  </aside>
+
+  <!-- محتوى الصفحة -->
+  <main class="col-span-3 space-y-6">
+
+    <!-- إحصائيات الحسابات -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-xl shadow-sm">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-sm font-medium mb-1 opacity-90">إجمالي الأرصدة</h3>
+            <p class="text-2xl font-bold" id="totalBalance">0</p>
+            <span class="text-xs opacity-75">ر.س</span>
+          </div>
+          <div class="text-3xl opacity-80">💰</div>
+        </div>
+      </div>
+      
+      <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-xl shadow-sm">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-sm font-medium mb-1 opacity-90">عدد الحسابات</h3>
+            <p class="text-2xl font-bold" id="totalAccounts">0</p>
+            <span class="text-xs opacity-75">حساب</span>
+          </div>
+          <div class="text-3xl opacity-80">💳</div>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-6 rounded-xl shadow-sm">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-sm font-medium mb-1 opacity-90">الحسابات النشطة</h3>
+            <p class="text-2xl font-bold" id="activeAccounts">0</p>
+            <span class="text-xs opacity-75">حساب</span>
+          </div>
+          <div class="text-3xl opacity-80">✅</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- إدارة الحسابات -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-bold text-gray-800">💳 الحسابات البنكية</h2>
+        <button onclick="showAddAccountModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors">
+          ➕ إضافة حساب جديد
+        </button>
+      </div>
+
+      <!-- فلترة الحسابات -->
+      <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">فلترة حسب البنك</label>
+          <select id="bankFilter" onchange="filterAccounts()" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+            <option value="">جميع البنوك</option>
+            <option value="البنك الأهلي">البنك الأهلي</option>
+            <option value="بنك الراجحي">بنك الراجحي</option>
+            <option value="بنك الرياض">بنك الرياض</option>
+            <option value="البنك السعودي الفرنسي">البنك السعودي الفرنسي</option>
+            <option value="بنك ساب">بنك ساب</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">فلترة حسب النوع</label>
+          <select id="typeFilter" onchange="filterAccounts()" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+            <option value="">جميع الأنواع</option>
+            <option value="جاري">حساب جاري</option>
+            <option value="توفير">حساب توفير</option>
+            <option value="استثماري">حساب استثماري</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">البحث</label>
+          <input type="text" id="searchInput" oninput="filterAccounts()" placeholder="البحث في الحسابات..." class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+        </div>
+      </div>
+
+      <!-- جدول الحسابات -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-right border-collapse">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="p-4 border-b font-semibold text-gray-700">البنك</th>
+              <th class="p-4 border-b font-semibold text-gray-700">رقم الحساب</th>
+              <th class="p-4 border-b font-semibold text-gray-700">نوع الحساب</th>
+              <th class="p-4 border-b font-semibold text-gray-700">الرصيد</th>
+              <th class="p-4 border-b font-semibold text-gray-700">الحالة</th>
+              <th class="p-4 border-b font-semibold text-gray-700">آخر معاملة</th>
+              <th class="p-4 border-b font-semibold text-gray-700">الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="accountsTableBody">
+            <!-- سيتم ملء البيانات ديناميكياً -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- رسالة عدم وجود بيانات -->
+      <div id="noAccountsMessage" class="hidden text-center py-8">
+        <div class="text-gray-400 text-6xl mb-4">💳</div>
+        <p class="text-gray-500 text-lg">لا توجد حسابات بنكية</p>
+        <button onclick="showAddAccountModal()" class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg">
+          إضافة حساب جديد
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- نافذة إضافة حساب -->
+<div id="addAccountModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-xl max-w-md w-full mx-4">
+    <h3 class="text-lg font-bold mb-4">إضافة حساب بنكي جديد</h3>
+    <form id="addAccountForm" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">اسم البنك</label>
+        <select id="bankName" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+          <option value="">اختر البنك</option>
+          <option value="البنك الأهلي">البنك الأهلي</option>
+          <option value="بنك الراجحي">بنك الراجحي</option>
+          <option value="بنك الرياض">بنك الرياض</option>
+          <option value="البنك السعودي الفرنسي">البنك السعودي الفرنسي</option>
+          <option value="بنك ساب">بنك ساب</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">رقم الحساب</label>
+        <input type="text" id="accountNumber" required placeholder="مثال: 1234567890" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">نوع الحساب</label>
+        <select id="accountType" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+          <option value="">اختر نوع الحساب</option>
+          <option value="جاري">حساب جاري</option>
+          <option value="توفير">حساب توفير</option>
+          <option value="استثماري">حساب استثماري</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">الرصيد الحالي (ر.س)</label>
+        <input type="number" id="initialBalance" step="0.01" min="0" placeholder="0.00" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+      </div>
+      <div class="flex space-x-3 space-x-reverse pt-4">
+        <button type="submit" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-lg">
+          إضافة الحساب
+        </button>
+        <button type="button" onclick="closeAddAccountModal()" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white p-3 rounded-lg">
+          إلغاء
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- نافذة تأكيد الحذف -->
+<div id="deleteConfirmModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-xl max-w-md w-full mx-4">
+    <h3 class="text-lg font-bold mb-4 text-red-600">تأكيد حذف الحساب</h3>
+    <p class="text-gray-600 mb-6">هل أنت متأكد من حذف هذا الحساب؟ لا يمكن التراجع عن هذا الإجراء.</p>
+    <div class="flex space-x-3 space-x-reverse">
+      <button onclick="confirmDeleteAccount()" class="flex-1 bg-red-600 hover:bg-red-700 text-white p-3 rounded-lg">
+        حذف الحساب
+      </button>
+      <button onclick="closeDeleteConfirmModal()" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white p-3 rounded-lg">
+        إلغاء
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- مؤشر التحميل -->
+<div id="loadingIndicator" class="hidden fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg flex items-center space-x-3 space-x-reverse">
+    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
+    <span class="text-gray-700">جاري تحميل الحسابات...</span>
+  </div>
+</div>
+
+<script>
+// Global variables
+let allAccounts = [];
+let filteredAccounts = [];
+let accountToDelete = null;
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+    loadUserData();
+    loadAccounts();
+    setupEventListeners();
+});
+
+// Load user data
+function loadUserData() {
+    const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (userData.fullname) {
+        document.getElementById('headerUserName').textContent = userData.fullname;
+    }
+}
+
+// Setup event listeners
+function setupEventListeners() {
+    document.getElementById('addAccountForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        addNewAccount();
+    });
+}
+
+// Load accounts from localStorage
+function loadAccounts() {
+    showLoading(true);
+    
+    setTimeout(() => {
+        const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const userKey = userData.email || 'default_user';
+        const savedAccounts = JSON.parse(localStorage.getItem(`accounts_${userKey}`) || '[]');
+        
+        if (savedAccounts.length === 0) {
+            // Initialize with sample data for new users
+            allAccounts = generateSampleAccounts();
+            saveAccounts();
+        } else {
+            allAccounts = savedAccounts;
+        }
+        
+        filteredAccounts = [...allAccounts];
+        displayAccounts();
+        updateStatistics();
+        showLoading(false);
+    }, 500);
+}
+
+// Generate sample accounts for new users
+function generateSampleAccounts() {
+    return [
+        {
+            id: 1,
+            bank: 'البنك الأهلي',
+            accountNumber: '1234567890',
+            type: 'جاري',
+            balance: 25000,
+            status: 'نشط',
+            lastTransaction: '2025-01-15',
+            createdDate: '2024-01-01'
+        },
+        {
+            id: 2,
+            bank: 'بنك الراجحي',
+            accountNumber: '9876543210',
+            type: 'توفير',
+            balance: 15000,
+            status: 'نشط',
+            lastTransaction: '2025-01-14',
+            createdDate: '2024-02-15'
+        },
+        {
+            id: 3,
+            bank: 'بنك الرياض',
+            accountNumber: '5555666677',
+            type: 'استثماري',
+            balance: 50000,
+            status: 'نشط',
+            lastTransaction: '2025-01-13',
+            createdDate: '2024-03-01'
+        }
+    ];
+}
+
+// Save accounts to localStorage
+function saveAccounts() {
+    const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const userKey = userData.email || 'default_user';
+    localStorage.setItem(`accounts_${userKey}`, JSON.stringify(allAccounts));
+}
+
+// Display accounts in table
+function displayAccounts() {
+    const tableBody = document.getElementById('accountsTableBody');
+    const noAccountsMessage = document.getElementById('noAccountsMessage');
+    
+    if (filteredAccounts.length === 0) {
+        tableBody.innerHTML = '';
+        noAccountsMessage.classList.remove('hidden');
+        return;
+    }
+    
+    noAccountsMessage.classList.add('hidden');
+    
+    tableBody.innerHTML = filteredAccounts.map(account => `
+        <tr class="border-b hover:bg-gray-50 transition-colors">
+            <td class="p-4">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center ml-3">
+                        🏦
+                    </div>
+                    ${account.bank}
+                </div>
+            </td>
+            <td class="p-4 font-mono">${account.accountNumber}</td>
+            <td class="p-4">
+                <span class="px-2 py-1 rounded-full text-xs ${getTypeColor(account.type)}">
+                    ${account.type}
+                </span>
+            </td>
+            <td class="p-4">
+                <span class="font-bold ${account.balance >= 0 ? 'text-green-600' : 'text-red-600'}">
+                    ${formatCurrency(account.balance)}
+                </span>
+            </td>
+            <td class="p-4">
+                <span class="px-2 py-1 rounded-full text-xs ${getStatusColor(account.status)}">
+                    ${account.status}
+                </span>
+            </td>
+            <td class="p-4 text-gray-600">${formatDate(account.lastTransaction)}</td>
+            <td class="p-4">
+                <div class="flex space-x-2 space-x-reverse">
+                    <button onclick="editAccount(${account.id})" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition-colors">
+                        تعديل
+                    </button>
+                    <button onclick="showDeleteConfirm(${account.id})" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition-colors">
+                        حذف
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+}
+
+// Update statistics
+function updateStatistics() {
+    const totalBalance = allAccounts.reduce((sum, account) => sum + account.balance, 0);
+    const totalAccounts = allAccounts.length;
+    const activeAccounts = allAccounts.filter(account => account.status === 'نشط').length;
+    
+    document.getElementById('totalBalance').textContent = formatNumber(totalBalance);
+    document.getElementById('totalAccounts').textContent = totalAccounts;
+    document.getElementById('activeAccounts').textContent = activeAccounts;
+}
+
+// Filter accounts
+function filterAccounts() {
+    const bankFilter = document.getElementById('bankFilter').value;
+    const typeFilter = document.getElementById('typeFilter').value;
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    
+    filteredAccounts = allAccounts.filter(account => {
+        const matchesBank = !bankFilter || account.bank === bankFilter;
+        const matchesType = !typeFilter || account.type === typeFilter;
+        const matchesSearch = !searchTerm || 
+            account.bank.toLowerCase().includes(searchTerm) ||
+            account.accountNumber.includes(searchTerm) ||
+            account.type.toLowerCase().includes(searchTerm);
+        
+        return matchesBank && matchesType && matchesSearch;
+    });
+    
+    displayAccounts();
+}
+
+// Add new account
+function addNewAccount() {
+    const bankName = document.getElementById('bankName').value;
+    const accountNumber = document.getElementById('accountNumber').value;
+    const accountType = document.getElementById('accountType').value;
+    const initialBalance = parseFloat(document.getElementById('initialBalance').value) || 0;
+    
+    // Check if account already exists
+    const existingAccount = allAccounts.find(acc => acc.accountNumber === accountNumber);
+    if (existingAccount) {
+        showNotification('رقم الحساب موجود مسبقاً', 'error');
+        return;
+    }
+    
+    const newAccount = {
+        id: Date.now(),
+        bank: bankName,
+        accountNumber: accountNumber,
+        type: accountType,
+        balance: initialBalance,
+        status: 'نشط',
+        lastTransaction: new Date().toISOString().split('T')[0],
+        createdDate: new Date().toISOString().split('T')[0]
+    };
+    
+    allAccounts.push(newAccount);
+    filteredAccounts = [...allAccounts];
+    saveAccounts();
+    displayAccounts();
+    updateStatistics();
+    closeAddAccountModal();
+    
+    showNotification('تم إضافة الحساب بنجاح! ✅', 'success');
+}
+
+// Edit account
+function editAccount(accountId) {
+    const account = allAccounts.find(acc => acc.id === accountId);
+    if (!account) return;
+    
+    // Populate form with current data
+    document.getElementById('bankName').value = account.bank;
+    document.getElementById('accountNumber').value = account.accountNumber;
+    document.getElementById('accountType').value = account.type;
+    document.getElementById('initialBalance').value = account.balance;
+    
+    // Change form to edit mode
+    const form = document.getElementById('addAccountForm');
+    form.setAttribute('data-edit-id', accountId);
+    document.querySelector('#addAccountModal h3').textContent = 'تعديل الحساب البنكي';
+    document.querySelector('#addAccountForm button[type="submit"]').textContent = 'حفظ التعديلات';
+    
+    showAddAccountModal();
+}
+
+// Delete account functions
+function showDeleteConfirm(accountId) {
+    accountToDelete = accountId;
+    document.getElementById('deleteConfirmModal').classList.remove('hidden');
+}
+
+function confirmDeleteAccount() {
+    if (accountToDelete) {
+        allAccounts = allAccounts.filter(acc => acc.id !== accountToDelete);
+        filteredAccounts = [...allAccounts];
+        saveAccounts();
+        displayAccounts();
+        updateStatistics();
+        showNotification('تم حذف الحساب بنجاح', 'success');
+    }
+    closeDeleteConfirmModal();
+}
+
+function closeDeleteConfirmModal() {
+    document.getElementById('deleteConfirmModal').classList.add('hidden');
+    accountToDelete = null;
+}
+
+// Modal functions
+function showAddAccountModal() {
+    document.getElementById('addAccountModal').classList.remove('hidden');
+}
+
+function closeAddAccountModal() {
+    document.getElementById('addAccountModal').classList.add('hidden');
+    document.getElementById('addAccountForm').reset();
+    document.getElementById('addAccountForm').removeAttribute('data-edit-id');
+    document.querySelector('#addAccountModal h3').textContent = 'إضافة حساب بنكي جديد';
+    document.querySelector('#addAccountForm button[type="submit"]').textContent = 'إضافة الحساب';
+}
+
+// Refresh accounts
+function refreshAccounts() {
+    showNotification('جاري تحديث الحسابات...', 'info');
+    loadAccounts();
+    showNotification('تم تحديث الحسابات بنجاح! ✅', 'success');
+}
+
+// Utility functions
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('ar-SA', {
+        style: 'currency',
+        currency: 'SAR',
+        minimumFractionDigits: 0
+    }).format(amount);
+}
+
+function formatNumber(number) {
+    return new Intl.NumberFormat('ar-SA').format(number);
+}
+
+function formatDate(dateString) {
+    return new Date(dateString).toLocaleDateString('ar-SA');
+}
+
+function getTypeColor(type) {
+    const colors = {
+        'جاري': 'bg-blue-100 text-blue-800',
+        'توفير': 'bg-green-100 text-green-800',
+        'استثماري': 'bg-purple-100 text-purple-800'
+    };
+    return colors[type] || 'bg-gray-100 text-gray-800';
+}
+
+function getStatusColor(status) {
+    const colors = {
+        'نشط': 'bg-green-100 text-green-800',
+        'معطل': 'bg-red-100 text-red-800',
+        'مجمد': 'bg-yellow-100 text-yellow-800'
+    };
+    return colors[status] || 'bg-gray-100 text-gray-800';
+}
+
+function showLoading(show) {
+    const indicator = document.getElementById('loadingIndicator');
+    if (show) {
+        indicator.classList.remove('hidden');
+    } else {
+        indicator.classList.add('hidden');
+    }
+}
+
+// Notification function
+function showNotification(message, type = 'info', duration = 3000) {
+    const notification = document.createElement('div');
+    const colors = {
+        success: 'bg-green-500',
+        error: 'bg-red-500',
+        warning: 'bg-yellow-500',
+        info: 'bg-blue-500'
+    };
+    
+    notification.className = `fixed top-4 right-4 ${colors[type]} text-white px-6 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-300`;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => notification.remove(), 300);
+    }, duration);
+}
+</script>
+
+</body>
+</html>

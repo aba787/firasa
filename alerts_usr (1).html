@@ -1,0 +1,829 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚠️ التنبيهات - لوحة التحكم</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<!-- شريط علوي -->
+<header class="bg-indigo-700 text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold">📊 فراسة - لوحة التحكم</h1>
+  <div class="flex items-center space-x-4 space-x-reverse">
+    <div class="relative">
+      <span class="mr-4">مرحباً، <strong id="headerUserName">المدير المالي</strong></span>
+      <div id="alertBadge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center hidden">
+        <span id="alertCount">0</span>
+      </div>
+    </div>
+    <button onclick="refreshAlerts()" class="bg-indigo-500 hover:bg-indigo-600 px-3 py-1 rounded text-sm transition-colors">
+      🔄 تحديث
+    </button>
+  </div>
+</header>
+
+<!-- المحتوى -->
+<div class="max-w-7xl mx-auto p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+
+  <!-- القائمة الجانبية -->
+  <aside class="bg-white shadow rounded-xl p-4 col-span-1">
+    <ul class="space-y-4">
+      <li><a href="Dashboard.html" class="block text-gray-700 hover:text-indigo-600 transition-colors">🏠 الصفحة الرئيسية</a></li>
+      <li><a href="add-operation.html" class="block text-gray-700 hover:text-indigo-600 transition-colors">➕ إضافة عملية</a></li>
+      <li><a href="reports_usr.html" class="block text-gray-700 hover:text-indigo-600 transition-colors">📑 التقارير المالية</a></li>
+      <li><a href="alerts_usr.html" class="block text-indigo-600 hover:text-indigo-800 font-bold bg-indigo-50 px-3 py-2 rounded-lg">⚠️ التنبيهات</a></li>
+      <li><a href="accounts_lm.html" class="block text-gray-700 hover:text-indigo-600 transition-colors">💳 الحسابات البنكية</a></li>
+      <li><a href="settings_usr.html" class="block text-gray-700 hover:text-indigo-600 transition-colors">⚙️ الإعدادات</a></li>
+    </ul>
+  </aside>
+
+  <!-- محتوى الصفحة -->
+  <main class="col-span-3 space-y-6">
+
+    <!-- إحصائيات التنبيهات -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="bg-red-50 p-4 rounded-xl border border-red-200">
+        <div class="flex items-center">
+          <div class="text-2xl text-red-600 ml-3">🚨</div>
+          <div>
+            <p class="text-sm text-red-600 font-medium">تنبيهات عاجلة</p>
+            <p class="text-xl font-bold text-red-700" id="criticalAlerts">0</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200">
+        <div class="flex items-center">
+          <div class="text-2xl text-yellow-600 ml-3">⚠️</div>
+          <div>
+            <p class="text-sm text-yellow-600 font-medium">تنبيهات مهمة</p>
+            <p class="text-xl font-bold text-yellow-700" id="warningAlerts">0</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+        <div class="flex items-center">
+          <div class="text-2xl text-blue-600 ml-3">ℹ️</div>
+          <div>
+            <p class="text-sm text-blue-600 font-medium">تنبيهات إعلامية</p>
+            <p class="text-xl font-bold text-blue-700" id="infoAlerts">0</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+        <div class="flex items-center">
+          <div class="text-2xl text-green-600 ml-3">✅</div>
+          <div>
+            <p class="text-sm text-green-600 font-medium">تم الحل</p>
+            <p class="text-xl font-bold text-green-700" id="resolvedAlerts">0</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- فلترة التنبيهات -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h3 class="text-lg font-bold text-gray-800 mb-4">🔍 فلترة التنبيهات</h3>
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">نوع التنبيه</label>
+          <select id="alertTypeFilter" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+            <option value="">الكل</option>
+            <option value="critical">عاجل</option>
+            <option value="warning">مهم</option>
+            <option value="info">إعلامي</option>
+            <option value="resolved">تم الحل</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">الفئة</label>
+          <select id="categoryFilter" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+            <option value="">الكل</option>
+            <option value="financial">مالي</option>
+            <option value="security">أمني</option>
+            <option value="system">نظام</option>
+            <option value="operation">عملياتي</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">من تاريخ</label>
+          <input type="date" id="dateFromFilter" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">إلى تاريخ</label>
+          <input type="date" id="dateToFilter" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div class="flex items-end">
+          <button onclick="applyFilters()" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">
+            تطبيق الفلترة
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- التنبيهات الرئيسية -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-bold text-gray-800">⚠️ التنبيهات</h2>
+        <div class="flex space-x-2 space-x-reverse">
+          <button onclick="markAllAsRead()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-200 text-sm">
+            ✅ تعليم الكل كمقروء
+          </button>
+          <button onclick="deleteAllResolved()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200 text-sm">
+            🗑️ حذف المحلولة
+          </button>
+          <button onclick="exportAlerts()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200 text-sm">
+            📋 تصدير
+          </button>
+        </div>
+      </div>
+
+      <div id="alertsList" class="space-y-3">
+        <div class="text-center py-8 text-gray-500">
+          <div class="text-4xl mb-4">🔔</div>
+          <p>جاري تحميل التنبيهات...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- إعدادات التنبيهات -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h3 class="text-lg font-bold text-gray-800 mb-4">⚙️ إعدادات التنبيهات</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <h4 class="font-semibold text-gray-700">تنبيهات مالية</h4>
+          <label class="flex items-center">
+            <input type="checkbox" id="financialAlerts" class="mr-2" checked>
+            <span>تنبيهات انخفاض الرصيد</span>
+          </label>
+          <label class="flex items-center">
+            <input type="checkbox" id="expenseAlerts" class="mr-2" checked>
+            <span>تنبيهات ارتفاع المصروفات</span>
+          </label>
+          <label class="flex items-center">
+            <input type="checkbox" id="revenueAlerts" class="mr-2" checked>
+            <span>تنبيهات انخفاض الإيرادات</span>
+          </label>
+        </div>
+        <div class="space-y-4">
+          <h4 class="font-semibold text-gray-700">تنبيهات النظام</h4>
+          <label class="flex items-center">
+            <input type="checkbox" id="securityAlerts" class="mr-2" checked>
+            <span>تنبيهات أمنية</span>
+          </label>
+          <label class="flex items-center">
+            <input type="checkbox" id="systemAlerts" class="mr-2" checked>
+            <span>تنبيهات النظام</span>
+          </label>
+          <label class="flex items-center">
+            <input type="checkbox" id="emailNotifications" class="mr-2">
+            <span>إشعارات البريد الإلكتروني</span>
+          </label>
+        </div>
+      </div>
+      <button onclick="saveAlertSettings()" class="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">
+        حفظ الإعدادات
+      </button>
+    </div>
+  </main>
+</div>
+
+<!-- Modal for Alert Details -->
+<div id="alertModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold text-gray-800">تفاصيل التنبيه</h3>
+      <button onclick="closeAlertModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+    </div>
+    <div id="alertModalContent">
+      <!-- Alert details will be loaded here -->
+    </div>
+  </div>
+</div>
+
+<!-- Notification Container -->
+<div id="notification-container" class="fixed top-4 left-4 z-50 space-y-2"></div>
+
+<script>
+// Global variables
+let allAlerts = [];
+let filteredAlerts = [];
+let alertSettings = {};
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+    loadUserData();
+    loadAlertSettings();
+    initializeAlerts();
+    loadAlerts();
+    setupEventListeners();
+    
+    // Start real-time updates
+    setInterval(generateRandomAlert, 30000); // Every 30 seconds
+    setInterval(updateAlertCounts, 5000); // Every 5 seconds
+});
+
+// Load user data
+function loadUserData() {
+    const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (userData.fullname) {
+        document.getElementById('headerUserName').textContent = userData.fullname;
+    }
+}
+
+// Load alert settings
+function loadAlertSettings() {
+    alertSettings = JSON.parse(localStorage.getItem('alertSettings') || '{}');
+    
+    // Set default values
+    const defaults = {
+        financialAlerts: true,
+        expenseAlerts: true,
+        revenueAlerts: true,
+        securityAlerts: true,
+        systemAlerts: true,
+        emailNotifications: false
+    };
+    
+    Object.keys(defaults).forEach(key => {
+        const value = alertSettings[key] !== undefined ? alertSettings[key] : defaults[key];
+        const checkbox = document.getElementById(key);
+        if (checkbox) {
+            checkbox.checked = value;
+        }
+    });
+}
+
+// Initialize alerts with sample data
+function initializeAlerts() {
+    const existingAlerts = localStorage.getItem('userAlerts');
+    if (!existingAlerts) {
+        const sampleAlerts = [
+            {
+                id: 'alert-1',
+                type: 'critical',
+                category: 'financial',
+                title: 'انخفاض حاد في الرصيد',
+                message: 'رصيدك الحالي أقل من 10% من المتوسط الشهري. يُنصح بمراجعة التدفق النقدي.',
+                timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 minutes ago
+                isRead: false,
+                isResolved: false,
+                actions: ['عرض التقارير', 'إضافة إيداع']
+            },
+            {
+                id: 'alert-2',
+                type: 'warning',
+                category: 'operation',
+                title: 'ارتفاع في المصروفات',
+                message: 'المصروفات هذا الشهر ارتفعت بنسبة 45% مقارنة بالشهر الماضي.',
+                timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
+                isRead: false,
+                isResolved: false,
+                actions: ['تحليل المصروفات', 'وضع حد أقصى']
+            },
+            {
+                id: 'alert-3',
+                type: 'info',
+                category: 'system',
+                title: 'تحديث النظام متاح',
+                message: 'يتوفر تحديث جديد لنظام فراسة يتضمن تحسينات أمنية ومميزات جديدة.',
+                timestamp: new Date(Date.now() - 1000 * 60 * 60 * 6).toISOString(), // 6 hours ago
+                isRead: true,
+                isResolved: false,
+                actions: ['تحديث الآن', 'عرض التفاصيل']
+            },
+            {
+                id: 'alert-4',
+                type: 'warning',
+                category: 'security',
+                title: 'محاولة دخول مشبوهة',
+                message: 'تم رصد محاولة دخول من عنوان IP غير مألوف. تم حظر المحاولة تلقائياً.',
+                timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
+                isRead: false,
+                isResolved: true,
+                actions: ['عرض السجلات', 'تعزيز الأمان']
+            }
+        ];
+        
+        localStorage.setItem('userAlerts', JSON.stringify(sampleAlerts));
+    }
+}
+
+// Load alerts
+function loadAlerts() {
+    allAlerts = JSON.parse(localStorage.getItem('userAlerts') || '[]');
+    filteredAlerts = [...allAlerts];
+    
+    updateAlertCounts();
+    displayAlerts();
+}
+
+// Setup event listeners
+function setupEventListeners() {
+    document.getElementById('alertTypeFilter').addEventListener('change', applyFilters);
+    document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+    document.getElementById('dateFromFilter').addEventListener('change', applyFilters);
+    document.getElementById('dateToFilter').addEventListener('change', applyFilters);
+}
+
+// Apply filters
+function applyFilters() {
+    const typeFilter = document.getElementById('alertTypeFilter').value;
+    const categoryFilter = document.getElementById('categoryFilter').value;
+    const dateFromFilter = document.getElementById('dateFromFilter').value;
+    const dateToFilter = document.getElementById('dateToFilter').value;
+    
+    filteredAlerts = allAlerts.filter(alert => {
+        let matches = true;
+        
+        if (typeFilter && alert.type !== typeFilter) matches = false;
+        if (categoryFilter && alert.category !== categoryFilter) matches = false;
+        
+        const alertDate = new Date(alert.timestamp).toISOString().split('T')[0];
+        if (dateFromFilter && alertDate < dateFromFilter) matches = false;
+        if (dateToFilter && alertDate > dateToFilter) matches = false;
+        
+        return matches;
+    });
+    
+    displayAlerts();
+    updateAlertCounts();
+}
+
+// Update alert counts
+function updateAlertCounts() {
+    const counts = {
+        critical: 0,
+        warning: 0,
+        info: 0,
+        resolved: 0
+    };
+    
+    filteredAlerts.forEach(alert => {
+        if (alert.isResolved) {
+            counts.resolved++;
+        } else {
+            counts[alert.type]++;
+        }
+    });
+    
+    document.getElementById('criticalAlerts').textContent = counts.critical;
+    document.getElementById('warningAlerts').textContent = counts.warning;
+    document.getElementById('infoAlerts').textContent = counts.info;
+    document.getElementById('resolvedAlerts').textContent = counts.resolved;
+    
+    // Update badge
+    const totalUnread = allAlerts.filter(alert => !alert.isRead && !alert.isResolved).length;
+    const badge = document.getElementById('alertBadge');
+    const badgeCount = document.getElementById('alertCount');
+    
+    if (totalUnread > 0) {
+        badge.classList.remove('hidden');
+        badgeCount.textContent = totalUnread;
+    } else {
+        badge.classList.add('hidden');
+    }
+}
+
+// Display alerts
+function displayAlerts() {
+    const container = document.getElementById('alertsList');
+    
+    if (filteredAlerts.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-8 text-gray-500">
+                <div class="text-4xl mb-4">🔔</div>
+                <p>لا توجد تنبيهات ${document.getElementById('alertTypeFilter').value ? 'مطابقة للفلتر' : 'حالياً'}</p>
+            </div>
+        `;
+        return;
+    }
+    
+    const sortedAlerts = [...filteredAlerts].sort((a, b) => {
+        // Unread first, then by timestamp (newest first)
+        if (a.isRead !== b.isRead) return a.isRead ? 1 : -1;
+        return new Date(b.timestamp) - new Date(a.timestamp);
+    });
+    
+    container.innerHTML = sortedAlerts.map(alert => createAlertElement(alert)).join('');
+}
+
+// Create alert element
+function createAlertElement(alert) {
+    const typeConfig = {
+        critical: { 
+            color: 'border-red-500 bg-red-50', 
+            icon: '🚨', 
+            textColor: 'text-red-700',
+            badgeColor: 'bg-red-500'
+        },
+        warning: { 
+            color: 'border-yellow-500 bg-yellow-50', 
+            icon: '⚠️', 
+            textColor: 'text-yellow-700',
+            badgeColor: 'bg-yellow-500'
+        },
+        info: { 
+            color: 'border-blue-500 bg-blue-50', 
+            icon: 'ℹ️', 
+            textColor: 'text-blue-700',
+            badgeColor: 'bg-blue-500'
+        }
+    };
+    
+    const config = typeConfig[alert.type] || typeConfig.info;
+    const timeAgo = getTimeAgo(alert.timestamp);
+    const readClass = alert.isRead ? 'opacity-75' : '';
+    const resolvedClass = alert.isResolved ? 'opacity-50' : '';
+    
+    return `
+        <div class="p-4 ${config.color} border-r-4 rounded-lg hover:shadow-md transition-shadow cursor-pointer ${readClass} ${resolvedClass}"
+             onclick="showAlertDetails('${alert.id}')">
+            <div class="flex items-start justify-between">
+                <div class="flex items-start space-x-3 space-x-reverse flex-1">
+                    <div class="text-2xl">${config.icon}</div>
+                    <div class="flex-1">
+                        <div class="flex items-center space-x-2 space-x-reverse mb-1">
+                            <h4 class="font-bold ${config.textColor}">${alert.title}</h4>
+                            ${!alert.isRead ? '<span class="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">جديد</span>' : ''}
+                            ${alert.isResolved ? '<span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">تم الحل</span>' : ''}
+                        </div>
+                        <p class="text-gray-700 text-sm mb-2">${alert.message}</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">${timeAgo} • ${getCategoryName(alert.category)}</span>
+                            <div class="flex space-x-2 space-x-reverse">
+                                ${alert.actions.map(action => 
+                                    `<button onclick="event.stopPropagation(); handleAlertAction('${alert.id}', '${action}')" 
+                                             class="text-xs bg-white ${config.textColor} px-2 py-1 rounded border hover:bg-gray-50 transition-colors">
+                                        ${action}
+                                    </button>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col space-y-1 mr-2">
+                    <button onclick="event.stopPropagation(); toggleAlertRead('${alert.id}')" 
+                            class="text-gray-500 hover:text-gray-700 text-sm" 
+                            title="${alert.isRead ? 'تعليم كغير مقروء' : 'تعليم كمقروء'}">
+                        ${alert.isRead ? '📖' : '📧'}
+                    </button>
+                    ${!alert.isResolved ? 
+                        `<button onclick="event.stopPropagation(); resolveAlert('${alert.id}')" 
+                                 class="text-gray-500 hover:text-green-600 text-sm" 
+                                 title="تعليم كمحلول">
+                            ✅
+                        </button>` : ''
+                    }
+                    <button onclick="event.stopPropagation(); deleteAlert('${alert.id}')" 
+                            class="text-gray-500 hover:text-red-600 text-sm" 
+                            title="حذف التنبيه">
+                        🗑️
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Get category name in Arabic
+function getCategoryName(category) {
+    const categories = {
+        financial: 'مالي',
+        security: 'أمني',
+        system: 'نظام',
+        operation: 'عملياتي'
+    };
+    return categories[category] || category;
+}
+
+// Get time ago
+function getTimeAgo(timestamp) {
+    const now = new Date();
+    const alertTime = new Date(timestamp);
+    const diffMs = now - alertTime;
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    
+    if (diffMins < 1) return 'الآن';
+    if (diffMins < 60) return `منذ ${diffMins} دقيقة`;
+    if (diffHours < 24) return `منذ ${diffHours} ساعة`;
+    return `منذ ${diffDays} يوم`;
+}
+
+// Show alert details in modal
+function showAlertDetails(alertId) {
+    const alert = allAlerts.find(a => a.id === alertId);
+    if (!alert) return;
+    
+    // Mark as read
+    if (!alert.isRead) {
+        toggleAlertRead(alertId);
+    }
+    
+    const typeConfig = {
+        critical: { color: 'text-red-700', bgColor: 'bg-red-50', icon: '🚨' },
+        warning: { color: 'text-yellow-700', bgColor: 'bg-yellow-50', icon: '⚠️' },
+        info: { color: 'text-blue-700', bgColor: 'bg-blue-50', icon: 'ℹ️' }
+    };
+    
+    const config = typeConfig[alert.type] || typeConfig.info;
+    
+    document.getElementById('alertModalContent').innerHTML = `
+        <div class="space-y-4">
+            <div class="flex items-center space-x-3 space-x-reverse ${config.bgColor} p-4 rounded-lg">
+                <div class="text-3xl">${config.icon}</div>
+                <div>
+                    <h4 class="text-xl font-bold ${config.color}">${alert.title}</h4>
+                    <p class="text-sm text-gray-600">${getCategoryName(alert.category)} • ${getTimeAgo(alert.timestamp)}</p>
+                </div>
+            </div>
+            
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h5 class="font-semibold mb-2">تفاصيل التنبيه:</h5>
+                <p class="text-gray-700">${alert.message}</p>
+            </div>
+            
+            <div class="bg-blue-50 p-4 rounded-lg">
+                <h5 class="font-semibold mb-2">الإجراءات المقترحة:</h5>
+                <div class="space-y-2">
+                    ${alert.actions.map(action => 
+                        `<button onclick="handleAlertAction('${alert.id}', '${action}'); closeAlertModal();" 
+                                 class="block w-full text-right bg-white border border-blue-200 px-4 py-2 rounded hover:bg-blue-50 transition-colors">
+                            ${action}
+                        </button>`
+                    ).join('')}
+                </div>
+            </div>
+            
+            <div class="flex space-x-3 space-x-reverse pt-4 border-t">
+                ${!alert.isResolved ? 
+                    `<button onclick="resolveAlert('${alert.id}'); closeAlertModal();" 
+                             class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                        ✅ تعليم كمحلول
+                    </button>` : 
+                    '<span class="bg-green-100 text-green-700 px-4 py-2 rounded-lg">✅ تم الحل</span>'
+                }
+                <button onclick="deleteAlert('${alert.id}'); closeAlertModal();" 
+                        class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
+                    🗑️ حذف التنبيه
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('alertModal').classList.remove('hidden');
+}
+
+// Close alert modal
+function closeAlertModal() {
+    document.getElementById('alertModal').classList.add('hidden');
+}
+
+// Toggle alert read status
+function toggleAlertRead(alertId) {
+    const alertIndex = allAlerts.findIndex(a => a.id === alertId);
+    if (alertIndex !== -1) {
+        allAlerts[alertIndex].isRead = !allAlerts[alertIndex].isRead;
+        saveAlerts();
+        loadAlerts();
+    }
+}
+
+// Resolve alert
+function resolveAlert(alertId) {
+    const alertIndex = allAlerts.findIndex(a => a.id === alertId);
+    if (alertIndex !== -1) {
+        allAlerts[alertIndex].isResolved = true;
+        allAlerts[alertIndex].isRead = true;
+        saveAlerts();
+        loadAlerts();
+        showNotification('تم تعليم التنبيه كمحلول', 'success');
+    }
+}
+
+// Delete alert
+function deleteAlert(alertId) {
+    if (confirm('هل أنت متأكد من حذف هذا التنبيه؟')) {
+        allAlerts = allAlerts.filter(a => a.id !== alertId);
+        saveAlerts();
+        loadAlerts();
+        showNotification('تم حذف التنبيه', 'info');
+    }
+}
+
+// Handle alert actions
+function handleAlertAction(alertId, action) {
+    const actionMap = {
+        'عرض التقارير': () => window.location.href = 'reports_usr.html',
+        'إضافة إيداع': () => window.location.href = 'add-operation.html',
+        'تحليل المصروفات': () => window.location.href = 'reports_usr.html',
+        'وضع حد أقصى': () => window.location.href = 'settings_usr.html',
+        'تحديث الآن': () => showNotification('جاري التحديث...', 'info'),
+        'عرض التفاصيل': () => showNotification('تم فتح صفحة التفاصيل', 'info'),
+        'عرض السجلات': () => showNotification('تم فتح سجلات الأمان', 'info'),
+        'تعزيز الأمان': () => window.location.href = 'settings_usr.html'
+    };
+    
+    if (actionMap[action]) {
+        actionMap[action]();
+    } else {
+        showNotification(`تم تنفيذ: ${action}`, 'info');
+    }
+}
+
+// Mark all as read
+function markAllAsRead() {
+    allAlerts.forEach(alert => {
+        if (!alert.isResolved) {
+            alert.isRead = true;
+        }
+    });
+    saveAlerts();
+    loadAlerts();
+    showNotification('تم تعليم جميع التنبيهات كمقروءة', 'success');
+}
+
+// Delete all resolved alerts
+function deleteAllResolved() {
+    const resolvedCount = allAlerts.filter(a => a.isResolved).length;
+    if (resolvedCount === 0) {
+        showNotification('لا توجد تنبيهات محلولة للحذف', 'info');
+        return;
+    }
+    
+    if (confirm(`هل أنت متأكد من حذف ${resolvedCount} تنبيه محلول؟`)) {
+        allAlerts = allAlerts.filter(a => !a.isResolved);
+        saveAlerts();
+        loadAlerts();
+        showNotification(`تم حذف ${resolvedCount} تنبيه محلول`, 'success');
+    }
+}
+
+// Export alerts
+function exportAlerts() {
+    const csvContent = [
+        'التاريخ,النوع,الفئة,العنوان,الرسالة,الحالة',
+        ...filteredAlerts.map(alert => [
+            new Date(alert.timestamp).toLocaleDateString('ar-SA'),
+            alert.type,
+            getCategoryName(alert.category),
+            `"${alert.title}"`,
+            `"${alert.message}"`,
+            alert.isResolved ? 'محلول' : (alert.isRead ? 'مقروء' : 'غير مقروء')
+        ].join(','))
+    ].join('\n');
+    
+    const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'alerts-report.csv';
+    link.click();
+    
+    showNotification('تم تصدير التنبيهات بنجاح', 'success');
+}
+
+// Save alert settings
+function saveAlertSettings() {
+    const settings = {
+        financialAlerts: document.getElementById('financialAlerts').checked,
+        expenseAlerts: document.getElementById('expenseAlerts').checked,
+        revenueAlerts: document.getElementById('revenueAlerts').checked,
+        securityAlerts: document.getElementById('securityAlerts').checked,
+        systemAlerts: document.getElementById('systemAlerts').checked,
+        emailNotifications: document.getElementById('emailNotifications').checked
+    };
+    
+    localStorage.setItem('alertSettings', JSON.stringify(settings));
+    alertSettings = settings;
+    showNotification('تم حفظ إعدادات التنبيهات', 'success');
+}
+
+// Refresh alerts
+function refreshAlerts() {
+    showNotification('جاري تحديث التنبيهات...', 'info');
+    loadAlerts();
+    applyFilters();
+    showNotification('تم تحديث التنبيهات', 'success');
+}
+
+// Generate random alert (simulating real-time alerts)
+function generateRandomAlert() {
+    const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const operations = JSON.parse(localStorage.getItem('operations') || '[]');
+    
+    // Only generate alerts if settings allow and operations exist
+    if (operations.length === 0 || Math.random() > 0.3) return;
+    
+    const alertTemplates = [
+        {
+            type: 'warning',
+            category: 'financial',
+            title: 'تحذير: ارتفاع المصروفات',
+            message: `المصروفات اليومية تجاوزت المتوسط المعتاد بنسبة ${Math.floor(Math.random() * 50 + 20)}%`,
+            actions: ['مراجعة المصروفات', 'وضع حدود إنفاق']
+        },
+        {
+            type: 'info',
+            category: 'operation',
+            title: 'تقرير يومي جاهز',
+            message: 'تم إنتاج التقرير المالي اليومي وهو متاح للمراجعة',
+            actions: ['عرض التقرير', 'تحميل PDF']
+        },
+        {
+            type: 'critical',
+            category: 'security',
+            title: 'تنبيه أمني',
+            message: 'تم رصد نشاط غير عادي في النظام. يُنصح بمراجعة الأمان',
+            actions: ['فحص الأمان', 'تغيير كلمة المرور']
+        }
+    ];
+    
+    const template = alertTemplates[Math.floor(Math.random() * alertTemplates.length)];
+    const newAlert = {
+        id: 'alert-' + Date.now(),
+        ...template,
+        timestamp: new Date().toISOString(),
+        isRead: false,
+        isResolved: false
+    };
+    
+    allAlerts.unshift(newAlert);
+    saveAlerts();
+    loadAlerts();
+    
+    // Show notification for new alert
+    showNotification(`تنبيه جديد: ${newAlert.title}`, newAlert.type);
+}
+
+// Save alerts to localStorage
+function saveAlerts() {
+    localStorage.setItem('userAlerts', JSON.stringify(allAlerts));
+}
+
+// Show notification
+function showNotification(message, type = 'info') {
+    let container = document.getElementById('notification-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'notification-container';
+        container.className = 'fixed top-4 left-4 z-50 space-y-2';
+        document.body.appendChild(container);
+    }
+    
+    const notification = document.createElement('div');
+    const typeClasses = {
+        'success': 'bg-green-500 text-white',
+        'error': 'bg-red-500 text-white',
+        'warning': 'bg-yellow-500 text-black',
+        'info': 'bg-blue-500 text-white',
+        'critical': 'bg-red-600 text-white'
+    };
+    
+    notification.className = `p-4 rounded-lg shadow-lg transform transition-all duration-300 ${typeClasses[type]} max-w-sm opacity-0 translate-x-full`;
+    notification.innerHTML = `
+        <div class="flex items-center justify-between">
+            <span>${message}</span>
+            <button onclick="this.parentElement.parentElement.remove()" class="mr-2 text-lg hover:text-gray-200">&times;</button>
+        </div>
+    `;
+    
+    container.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.classList.remove('opacity-0', 'translate-x-full');
+    }, 100);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.classList.add('opacity-0', 'translate-x-full');
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, 5000);
+}
+
+// Export functions for global access
+window.refreshAlerts = refreshAlerts;
+window.showAlertDetails = showAlertDetails;
+window.closeAlertModal = closeAlertModal;
+window.toggleAlertRead = toggleAlertRead;
+window.resolveAlert = resolveAlert;
+window.deleteAlert = deleteAlert;
+window.handleAlertAction = handleAlertAction;
+window.markAllAsRead = markAllAsRead;
+window.deleteAllResolved = deleteAllResolved;
+window.exportAlerts = exportAlerts;
+window.saveAlertSettings = saveAlertSettings;
+window.applyFilters = applyFilters;
+</script>
+
+</body>
+</html>

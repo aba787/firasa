@@ -1,0 +1,1117 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚙️ الإعدادات - لوحة التحكم</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<!-- شريط علوي -->
+<header class="bg-indigo-700 text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold">📊 فراسة - لوحة التحكم</h1>
+  <div class="flex items-center space-x-4 space-x-reverse">
+    <span class="mr-4">مرحباً، <strong id="headerUserName">المدير المالي</strong></span>
+    <button onclick="refreshSettings()" class="bg-indigo-600 hover:bg-indigo-800 px-3 py-1 rounded text-sm transition-colors">
+      🔄 تحديث
+    </button>
+  </div>
+</header>
+
+<!-- المحتوى -->
+<div class="max-w-7xl mx-auto p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+
+  <!-- القائمة الجانبية -->
+  <aside class="bg-white shadow rounded-xl p-4 col-span-1">
+    <ul class="space-y-4">
+      <li><a href="Dashboard.html" class="block text-gray-700 hover:text-indigo-600 transition-colors">🏠 الصفحة الرئيسية</a></li>
+      <li><a href="add-operation.html" class="block text-gray-700 hover:text-indigo-600 transition-colors">➕ إضافة عملية</a></li>
+      <li><a href="reports_usr.html" class="block text-gray-700 hover:text-indigo-600 transition-colors">📑 التقارير المالية</a></li>
+      <li><a href="alerts_usr.html" class="block text-gray-700 hover:text-indigo-600 transition-colors">⚠️ التنبيهات</a></li>
+      <li><a href="accounts_lm.html" class="block text-gray-700 hover:text-indigo-600 transition-colors">💳 الحسابات البنكية</a></li>
+      <li><a href="settings_usr.html" class="block text-indigo-600 hover:text-indigo-800 font-bold bg-indigo-50 px-3 py-2 rounded-lg">⚙️ الإعدادات</a></li>
+    </ul>
+  </aside>
+
+  <!-- محتوى الصفحة -->
+  <main class="col-span-3 space-y-6">
+
+    <!-- إعدادات الملف الشخصي -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+        <span class="text-2xl ml-3">👤</span>
+        الملف الشخصي
+      </h2>
+      
+      <form id="profileForm" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">الاسم الكامل</label>
+            <input type="text" id="fullName" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="أدخل اسمك الكامل" required>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
+            <input type="email" id="email" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="example@email.com" required>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">رقم الهاتف</label>
+            <input type="tel" id="phone" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="+966 50 123 4567">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">المسمى الوظيفي</label>
+            <input type="text" id="jobTitle" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="مدير مالي">
+          </div>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">الشركة/المؤسسة</label>
+          <input type="text" id="company" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="اسم الشركة">
+        </div>
+        
+        <button type="submit" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-200">
+          💾 حفظ بيانات الملف الشخصي
+        </button>
+      </form>
+    </div>
+
+    <!-- إعدادات الأمان -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+        <span class="text-2xl ml-3">🔒</span>
+        الأمان وكلمة المرور
+      </h2>
+      
+      <form id="securityForm" class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">كلمة المرور الحالية</label>
+          <input type="password" id="currentPassword" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="أدخل كلمة المرور الحالية">
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">كلمة المرور الجديدة</label>
+            <input type="password" id="newPassword" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="كلمة المرور الجديدة">
+            <div class="mt-2 text-xs text-gray-500">
+              يجب أن تحتوي على 8 أحرف على الأقل مع أرقام ورموز
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">تأكيد كلمة المرور</label>
+            <input type="password" id="confirmPassword" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="أعد إدخال كلمة المرور">
+          </div>
+        </div>
+        
+        <!-- مؤشر قوة كلمة المرور -->
+        <div id="passwordStrength" class="hidden">
+          <div class="text-sm text-gray-700 mb-2">قوة كلمة المرور:</div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div id="strengthBar" class="bg-red-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+          <div id="strengthText" class="text-xs mt-1"></div>
+        </div>
+        
+        <div class="bg-blue-50 p-4 rounded-lg">
+          <h4 class="font-semibold text-blue-800 mb-2">إعدادات الأمان الإضافية</h4>
+          <div class="space-y-3">
+            <label class="flex items-center">
+              <input type="checkbox" id="twoFactorAuth" class="ml-2">
+              <span class="text-sm">تفعيل المصادقة الثنائية (2FA)</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" id="loginNotifications" class="ml-2" checked>
+              <span class="text-sm">إشعارات تسجيل الدخول عبر البريد الإلكتروني</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" id="sessionTimeout" class="ml-2" checked>
+              <span class="text-sm">انتهاء الجلسة تلقائياً بعد فترة عدم نشاط</span>
+            </label>
+          </div>
+        </div>
+        
+        <button type="submit" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-200">
+          🔐 تحديث إعدادات الأمان
+        </button>
+      </form>
+    </div>
+
+    <!-- إعدادات التنبيهات والإشعارات -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+        <span class="text-2xl ml-3">🔔</span>
+        التنبيهات والإشعارات
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <h3 class="font-semibold text-gray-700 mb-4">التنبيهات المالية</h3>
+          <div class="space-y-3">
+            <label class="flex items-center justify-between">
+              <span class="text-sm">انخفاض الرصيد</span>
+              <input type="checkbox" id="lowBalanceAlert" class="toggle-switch" checked>
+            </label>
+            <label class="flex items-center justify-between">
+              <span class="text-sm">ارتفاع المصروفات</span>
+              <input type="checkbox" id="highExpenseAlert" class="toggle-switch" checked>
+            </label>
+            <label class="flex items-center justify-between">
+              <span class="text-sm">انخفاض الإيرادات</span>
+              <input type="checkbox" id="lowRevenueAlert" class="toggle-switch">
+            </label>
+            <label class="flex items-center justify-between">
+              <span class="text-sm">تجاوز الميزانية</span>
+              <input type="checkbox" id="budgetExceedAlert" class="toggle-switch" checked>
+            </label>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="font-semibold text-gray-700 mb-4">إشعارات النظام</h3>
+          <div class="space-y-3">
+            <label class="flex items-center justify-between">
+              <span class="text-sm">التحديثات والميزات الجديدة</span>
+              <input type="checkbox" id="systemUpdates" class="toggle-switch" checked>
+            </label>
+            <label class="flex items-center justify-between">
+              <span class="text-sm">التقارير الدورية</span>
+              <input type="checkbox" id="periodicReports" class="toggle-switch" checked>
+            </label>
+            <label class="flex items-center justify-between">
+              <span class="text-sm">إشعارات الأمان</span>
+              <input type="checkbox" id="securityNotifications" class="toggle-switch" checked>
+            </label>
+            <label class="flex items-center justify-between">
+              <span class="text-sm">نصائح الاستخدام</span>
+              <input type="checkbox" id="usageTips" class="toggle-switch">
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+        <h4 class="font-semibold text-gray-700 mb-3">تخصيص حدود التنبيهات</h4>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm text-gray-600 mb-1">حد انخفاض الرصيد (ر.س)</label>
+            <input type="number" id="lowBalanceThreshold" class="w-full p-2 border rounded" value="1000" min="0">
+          </div>
+          <div>
+            <label class="block text-sm text-gray-600 mb-1">حد ارتفاع المصروفات (%)</label>
+            <input type="number" id="expenseThreshold" class="w-full p-2 border rounded" value="20" min="0" max="100">
+          </div>
+          <div>
+            <label class="block text-sm text-gray-600 mb-1">تكرار التقارير</label>
+            <select id="reportFrequency" class="w-full p-2 border rounded">
+              <option value="daily">يومي</option>
+              <option value="weekly" selected>أسبوعي</option>
+              <option value="monthly">شهري</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <button onclick="saveNotificationSettings()" class="mt-6 bg-yellow-600 text-white px-6 py-3 rounded-lg hover:bg-yellow-700 transition duration-200">
+        🔔 حفظ إعدادات التنبيهات
+      </button>
+    </div>
+
+    <!-- إعدادات العرض والتخصيص -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+        <span class="text-2xl ml-3">🎨</span>
+        إعدادات العرض والتخصيص
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <h3 class="font-semibold text-gray-700 mb-4">المظهر العام</h3>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm text-gray-600 mb-2">نمط الألوان</label>
+              <select id="colorScheme" class="w-full p-3 border rounded-lg">
+                <option value="default">افتراضي (أزرق)</option>
+                <option value="green">أخضر</option>
+                <option value="purple">بنفسجي</option>
+                <option value="red">أحمر</option>
+                <option value="dark">داكن</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm text-gray-600 mb-2">حجم الخط</label>
+              <select id="fontSize" class="w-full p-3 border rounded-lg">
+                <option value="small">صغير</option>
+                <option value="medium" selected>متوسط</option>
+                <option value="large">كبير</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm text-gray-600 mb-2">الوضع</label>
+              <select id="displayMode" class="w-full p-3 border rounded-lg">
+                <option value="light" selected>فاتح</option>
+                <option value="dark">داكن</option>
+                <option value="auto">تلقائي</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="font-semibold text-gray-700 mb-4">إعدادات لوحة التحكم</h3>
+          <div class="space-y-4">
+            <label class="flex items-center">
+              <input type="checkbox" id="showWelcomeMessage" class="ml-2" checked>
+              <span class="text-sm">عرض رسالة الترحيب</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" id="showQuickStats" class="ml-2" checked>
+              <span class="text-sm">عرض الإحصائيات السريعة</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" id="showRecentActivity" class="ml-2" checked>
+              <span class="text-sm">عرض النشاط الأخير</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" id="compactView" class="ml-2">
+              <span class="text-sm">العرض المضغوط</span>
+            </label>
+          </div>
+          
+          <div class="mt-4">
+            <label class="block text-sm text-gray-600 mb-2">عدد العمليات المعروضة</label>
+            <select id="itemsPerPage" class="w-full p-3 border rounded-lg">
+              <option value="10">10</option>
+              <option value="25" selected>25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <button onclick="saveDisplaySettings()" class="mt-6 bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-200">
+        🎨 حفظ إعدادات العرض
+      </button>
+    </div>
+
+    <!-- إعدادات البيانات والنسخ الاحتياطي -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+        <span class="text-2xl ml-3">💾</span>
+        إدارة البيانات والنسخ الاحتياطي
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <h3 class="font-semibold text-gray-700 mb-4">تصدير البيانات</h3>
+          <div class="space-y-3">
+            <button onclick="exportData('operations')" class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-200">
+              📊 تصدير العمليات المالية
+            </button>
+            <button onclick="exportData('accounts')" class="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition duration-200">
+              💳 تصدير الحسابات البنكية
+            </button>
+            <button onclick="exportData('all')" class="w-full bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 transition duration-200">
+              🗄️ تصدير جميع البيانات
+            </button>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="font-semibold text-gray-700 mb-4">النسخ الاحتياطي التلقائي</h3>
+          <div class="space-y-4">
+            <label class="flex items-center">
+              <input type="checkbox" id="autoBackup" class="ml-2" checked>
+              <span class="text-sm">تفعيل النسخ الاحتياطي التلقائي</span>
+            </label>
+            <div>
+              <label class="block text-sm text-gray-600 mb-2">تكرار النسخ الاحتياطي</label>
+              <select id="backupFrequency" class="w-full p-3 border rounded-lg">
+                <option value="daily" selected>يومي</option>
+                <option value="weekly">أسبوعي</option>
+                <option value="monthly">شهري</option>
+              </select>
+            </div>
+            <button onclick="createBackup()" class="w-full bg-orange-600 text-white p-3 rounded-lg hover:bg-orange-700 transition duration-200">
+              💾 إنشاء نسخة احتياطية الآن
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-6 bg-red-50 p-4 rounded-lg border border-red-200">
+        <h4 class="font-semibold text-red-700 mb-3">إعادة تعيين البيانات</h4>
+        <p class="text-sm text-red-600 mb-3">تحذير: هذا الإجراء سيحذف جميع بياناتك ولا يمكن التراجع عنه!</p>
+        <button onclick="resetAllData()" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition duration-200">
+          🗑️ إعادة تعيين جميع البيانات
+        </button>
+      </div>
+    </div>
+
+    <!-- معلومات النظام والحساب -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+        <span class="text-2xl ml-3">ℹ️</span>
+        معلومات النظام والحساب
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <h3 class="font-semibold text-gray-700 mb-4">إحصائيات الاستخدام</h3>
+          <div class="space-y-3">
+            <div class="flex justify-between">
+              <span class="text-sm text-gray-600">تاريخ إنشاء الحساب:</span>
+              <span id="accountCreated" class="text-sm font-medium">--</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm text-gray-600">آخر تسجيل دخول:</span>
+              <span id="lastLogin" class="text-sm font-medium">--</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm text-gray-600">عدد العمليات المالية:</span>
+              <span id="totalOperations" class="text-sm font-medium">0</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm text-gray-600">عدد الحسابات البنكية:</span>
+              <span id="totalAccounts" class="text-sm font-medium">0</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm text-gray-600">مساحة البيانات المستخدمة:</span>
+              <span id="dataUsage" class="text-sm font-medium">--</span>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="font-semibold text-gray-700 mb-4">معلومات النظام</h3>
+          <div class="space-y-3">
+            <div class="flex justify-between">
+              <span class="text-sm text-gray-600">إصدار النظام:</span>
+              <span class="text-sm font-medium">v2.1.0</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm text-gray-600">آخر تحديث:</span>
+              <span class="text-sm font-medium">15 يناير 2025</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm text-gray-600">المتصفح:</span>
+              <span id="browserInfo" class="text-sm font-medium">--</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm text-gray-600">حالة الاتصال:</span>
+              <span class="text-sm font-medium text-green-600">متصل</span>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <button onclick="checkForUpdates()" class="w-full bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 transition duration-200">
+              🔄 فحص التحديثات
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- إجراءات الحساب -->
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+        <span class="text-2xl ml-3">🔧</span>
+        إجراءات الحساب
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <button onclick="downloadUserData()" class="bg-blue-600 text-white p-4 rounded-lg hover:bg-blue-700 transition duration-200 text-center">
+          <div class="text-2xl mb-2">📥</div>
+          <div class="text-sm font-medium">تحميل بياناتي</div>
+        </button>
+        
+        <button onclick="contactSupport()" class="bg-green-600 text-white p-4 rounded-lg hover:bg-green-700 transition duration-200 text-center">
+          <div class="text-2xl mb-2">💬</div>
+          <div class="text-sm font-medium">التواصل مع الدعم</div>
+        </button>
+        
+        <button onclick="logout()" class="bg-red-600 text-white p-4 rounded-lg hover:bg-red-700 transition duration-200 text-center">
+          <div class="text-2xl mb-2">🚪</div>
+          <div class="text-sm font-medium">تسجيل الخروج</div>
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- Loading overlay -->
+<div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg flex items-center space-x-3 space-x-reverse">
+    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
+    <span class="text-gray-700">جاري التحميل...</span>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-xl max-w-md w-full mx-4">
+    <h3 class="text-lg font-bold mb-4" id="confirmTitle">تأكيد العملية</h3>
+    <p class="text-gray-600 mb-6" id="confirmMessage">هل أنت متأكد من هذا الإجراء؟</p>
+    <div class="flex space-x-3 space-x-reverse">
+      <button id="confirmButton" class="flex-1 bg-red-600 text-white p-3 rounded-lg hover:bg-red-700">
+        تأكيد
+      </button>
+      <button onclick="closeConfirmModal()" class="flex-1 bg-gray-500 text-white p-3 rounded-lg hover:bg-gray-600">
+        إلغاء
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Global variables
+let userSettings = {};
+let userProfile = {};
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+    loadUserData();
+    loadUserSettings();
+    updateSystemInfo();
+    setupEventListeners();
+    setupPasswordStrengthChecker();
+    loadUsageStatistics();
+});
+
+// Load user data and profile
+function loadUserData() {
+    const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    
+    if (userData.fullname) {
+        document.getElementById('headerUserName').textContent = userData.fullname;
+        document.getElementById('fullName').value = userData.fullname;
+    }
+    
+    if (userData.email) {
+        document.getElementById('email').value = userData.email;
+    }
+    
+    // Load additional profile data
+    const profileData = JSON.parse(localStorage.getItem(`profile_${userData.email || 'default'}`) || '{}');
+    userProfile = { ...userData, ...profileData };
+    
+    // Populate form fields
+    document.getElementById('phone').value = userProfile.phone || '';
+    document.getElementById('jobTitle').value = userProfile.jobTitle || '';
+    document.getElementById('company').value = userProfile.company || '';
+}
+
+// Load user settings
+function loadUserSettings() {
+    const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const userKey = userData.email || 'default';
+    userSettings = JSON.parse(localStorage.getItem(`settings_${userKey}`) || '{}');
+    
+    // Apply loaded settings
+    applySettings();
+}
+
+// Apply settings to UI
+function applySettings() {
+    // Notification settings
+    document.getElementById('lowBalanceAlert').checked = userSettings.lowBalanceAlert !== false;
+    document.getElementById('highExpenseAlert').checked = userSettings.highExpenseAlert !== false;
+    document.getElementById('lowRevenueAlert').checked = userSettings.lowRevenueAlert || false;
+    document.getElementById('budgetExceedAlert').checked = userSettings.budgetExceedAlert !== false;
+    document.getElementById('systemUpdates').checked = userSettings.systemUpdates !== false;
+    document.getElementById('periodicReports').checked = userSettings.periodicReports !== false;
+    document.getElementById('securityNotifications').checked = userSettings.securityNotifications !== false;
+    document.getElementById('usageTips').checked = userSettings.usageTips || false;
+    
+    // Thresholds
+    document.getElementById('lowBalanceThreshold').value = userSettings.lowBalanceThreshold || 1000;
+    document.getElementById('expenseThreshold').value = userSettings.expenseThreshold || 20;
+    document.getElementById('reportFrequency').value = userSettings.reportFrequency || 'weekly';
+    
+    // Display settings
+    document.getElementById('colorScheme').value = userSettings.colorScheme || 'default';
+    document.getElementById('fontSize').value = userSettings.fontSize || 'medium';
+    document.getElementById('displayMode').value = userSettings.displayMode || 'light';
+    document.getElementById('showWelcomeMessage').checked = userSettings.showWelcomeMessage !== false;
+    document.getElementById('showQuickStats').checked = userSettings.showQuickStats !== false;
+    document.getElementById('showRecentActivity').checked = userSettings.showRecentActivity !== false;
+    document.getElementById('compactView').checked = userSettings.compactView || false;
+    document.getElementById('itemsPerPage').value = userSettings.itemsPerPage || 25;
+    
+    // Security settings
+    document.getElementById('twoFactorAuth').checked = userSettings.twoFactorAuth || false;
+    document.getElementById('loginNotifications').checked = userSettings.loginNotifications !== false;
+    document.getElementById('sessionTimeout').checked = userSettings.sessionTimeout !== false;
+    
+    // Backup settings
+    document.getElementById('autoBackup').checked = userSettings.autoBackup !== false;
+    document.getElementById('backupFrequency').value = userSettings.backupFrequency || 'daily';
+}
+
+// Setup event listeners
+function setupEventListeners() {
+    // Profile form
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveProfile();
+    });
+    
+    // Security form
+    document.getElementById('securityForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        updatePassword();
+    });
+    
+    // Real-time settings save
+    const settingsInputs = document.querySelectorAll('input[type="checkbox"], select');
+    settingsInputs.forEach(input => {
+        input.addEventListener('change', autoSaveSettings);
+    });
+}
+
+// Setup password strength checker
+function setupPasswordStrengthChecker() {
+    const newPasswordField = document.getElementById('newPassword');
+    newPasswordField.addEventListener('input', function() {
+        const password = this.value;
+        if (password.length > 0) {
+            document.getElementById('passwordStrength').classList.remove('hidden');
+            updatePasswordStrength(password);
+        } else {
+            document.getElementById('passwordStrength').classList.add('hidden');
+        }
+    });
+}
+
+// Update password strength indicator
+function updatePasswordStrength(password) {
+    let score = 0;
+    let feedback = [];
+    
+    // Length check
+    if (password.length >= 8) score += 1;
+    else feedback.push('8 أحرف على الأقل');
+    
+    // Uppercase check
+    if (/[A-Z]/.test(password)) score += 1;
+    else feedback.push('حرف كبير');
+    
+    // Lowercase check
+    if (/[a-z]/.test(password)) score += 1;
+    else feedback.push('حرف صغير');
+    
+    // Number check
+    if (/\d/.test(password)) score += 1;
+    else feedback.push('رقم');
+    
+    // Special character check
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score += 1;
+    else feedback.push('رمز خاص');
+    
+    const strengthBar = document.getElementById('strengthBar');
+    const strengthText = document.getElementById('strengthText');
+    
+    const percentage = (score / 5) * 100;
+    strengthBar.style.width = percentage + '%';
+    
+    let color, text;
+    if (score <= 2) {
+        color = 'bg-red-500';
+        text = 'ضعيفة';
+    } else if (score <= 3) {
+        color = 'bg-yellow-500';
+        text = 'متوسطة';
+    } else if (score <= 4) {
+        color = 'bg-blue-500';
+        text = 'جيدة';
+    } else {
+        color = 'bg-green-500';
+        text = 'قوية جداً';
+    }
+    
+    strengthBar.className = `h-2 rounded-full transition-all duration-300 ${color}`;
+    strengthText.textContent = `${text}${feedback.length > 0 ? ' - مطلوب: ' + feedback.join(', ') : ''}`;
+}
+
+// Save profile
+function saveProfile() {
+    const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const userKey = userData.email || 'default';
+    
+    const profileData = {
+        fullname: document.getElementById('fullName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        jobTitle: document.getElementById('jobTitle').value,
+        company: document.getElementById('company').value,
+        lastUpdated: new Date().toISOString()
+    };
+    
+    // Update current user data
+    const updatedUser = { ...userData, ...profileData };
+    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    localStorage.setItem(`profile_${userKey}`, JSON.stringify(profileData));
+    
+    showNotification('تم حفظ بيانات الملف الشخصي بنجاح! ✅', 'success');
+    
+    // Update header name if changed
+    document.getElementById('headerUserName').textContent = profileData.fullname;
+}
+
+// Update password
+function updatePassword() {
+    const currentPassword = document.getElementById('currentPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    
+    if (!currentPassword) {
+        showNotification('يرجى إدخال كلمة المرور الحالية', 'error');
+        return;
+    }
+    
+    if (!newPassword) {
+        showNotification('يرجى إدخال كلمة المرور الجديدة', 'error');
+        return;
+    }
+    
+    if (newPassword !== confirmPassword) {
+        showNotification('كلمات المرور غير متطابقة', 'error');
+        return;
+    }
+    
+    if (newPassword.length < 8) {
+        showNotification('كلمة المرور يجب أن تكون 8 أحرف على الأقل', 'error');
+        return;
+    }
+    
+    // Simulate password update
+    showLoadingOverlay(true);
+    setTimeout(() => {
+        showLoadingOverlay(false);
+        showNotification('تم تحديث كلمة المرور بنجاح! 🔐', 'success');
+        
+        // Clear password fields
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+        document.getElementById('passwordStrength').classList.add('hidden');
+        
+        // Save security settings
+        saveSecuritySettings();
+    }, 1500);
+}
+
+// Auto-save settings
+function autoSaveSettings() {
+    setTimeout(saveAllSettings, 500); // Debounce
+}
+
+// Save all settings
+function saveAllSettings() {
+    const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const userKey = userData.email || 'default';
+    
+    userSettings = {
+        // Notification settings
+        lowBalanceAlert: document.getElementById('lowBalanceAlert').checked,
+        highExpenseAlert: document.getElementById('highExpenseAlert').checked,
+        lowRevenueAlert: document.getElementById('lowRevenueAlert').checked,
+        budgetExceedAlert: document.getElementById('budgetExceedAlert').checked,
+        systemUpdates: document.getElementById('systemUpdates').checked,
+        periodicReports: document.getElementById('periodicReports').checked,
+        securityNotifications: document.getElementById('securityNotifications').checked,
+        usageTips: document.getElementById('usageTips').checked,
+        
+        // Thresholds
+        lowBalanceThreshold: parseInt(document.getElementById('lowBalanceThreshold').value),
+        expenseThreshold: parseInt(document.getElementById('expenseThreshold').value),
+        reportFrequency: document.getElementById('reportFrequency').value,
+        
+        // Display settings
+        colorScheme: document.getElementById('colorScheme').value,
+        fontSize: document.getElementById('fontSize').value,
+        displayMode: document.getElementById('displayMode').value,
+        showWelcomeMessage: document.getElementById('showWelcomeMessage').checked,
+        showQuickStats: document.getElementById('showQuickStats').checked,
+        showRecentActivity: document.getElementById('showRecentActivity').checked,
+        compactView: document.getElementById('compactView').checked,
+        itemsPerPage: parseInt(document.getElementById('itemsPerPage').value),
+        
+        // Security settings
+        twoFactorAuth: document.getElementById('twoFactorAuth').checked,
+        loginNotifications: document.getElementById('loginNotifications').checked,
+        sessionTimeout: document.getElementById('sessionTimeout').checked,
+        
+        // Backup settings
+        autoBackup: document.getElementById('autoBackup').checked,
+        backupFrequency: document.getElementById('backupFrequency').value,
+        
+        lastUpdated: new Date().toISOString()
+    };
+    
+    localStorage.setItem(`settings_${userKey}`, JSON.stringify(userSettings));
+}
+
+// Save notification settings
+function saveNotificationSettings() {
+    saveAllSettings();
+    showNotification('تم حفظ إعدادات التنبيهات بنجاح! 🔔', 'success');
+}
+
+// Save display settings
+function saveDisplaySettings() {
+    saveAllSettings();
+    applyDisplaySettings();
+    showNotification('تم حفظ إعدادات العرض بنجاح! 🎨', 'success');
+}
+
+// Apply display settings to current page
+function applyDisplaySettings() {
+    const colorScheme = document.getElementById('colorScheme').value;
+    const fontSize = document.getElementById('fontSize').value;
+    const displayMode = document.getElementById('displayMode').value;
+    
+    // Apply color scheme
+    document.body.setAttribute('data-color-scheme', colorScheme);
+    
+    // Apply font size
+    document.body.setAttribute('data-font-size', fontSize);
+    
+    // Apply display mode
+    if (displayMode === 'dark') {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+}
+
+// Save security settings
+function saveSecuritySettings() {
+    saveAllSettings();
+    showNotification('تم حفظ إعدادات الأمان بنجاح! 🔐', 'success');
+}
+
+// Load usage statistics
+function loadUsageStatistics() {
+    const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const userKey = userData.email || 'default';
+    
+    // Get operations count
+    const operations = JSON.parse(localStorage.getItem('operations') || '[]');
+    document.getElementById('totalOperations').textContent = operations.length;
+    
+    // Get accounts count
+    const accounts = JSON.parse(localStorage.getItem(`accounts_${userKey}`) || '[]');
+    document.getElementById('totalAccounts').textContent = accounts.length;
+    
+    // Calculate data usage (simplified)
+    const dataSize = JSON.stringify(localStorage).length;
+    const sizeInKB = (dataSize / 1024).toFixed(2);
+    document.getElementById('dataUsage').textContent = `${sizeInKB} KB`;
+    
+    // Set account creation date
+    const profileData = JSON.parse(localStorage.getItem(`profile_${userKey}`) || '{}');
+    const createdDate = profileData.accountCreated || '1 يناير 2024';
+    document.getElementById('accountCreated').textContent = createdDate;
+    
+    // Set last login
+    const lastLogin = new Date().toLocaleDateString('ar-SA');
+    document.getElementById('lastLogin').textContent = lastLogin;
+}
+
+// Update system info
+function updateSystemInfo() {
+    // Browser info
+    const browserInfo = `${navigator.userAgent.split(' ').slice(-1)[0]}`;
+    document.getElementById('browserInfo').textContent = browserInfo;
+}
+
+// Export data functions
+function exportData(type) {
+    showLoadingOverlay(true);
+    
+    setTimeout(() => {
+        const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const userKey = userData.email || 'default';
+        let data, filename;
+        
+        switch(type) {
+            case 'operations':
+                data = JSON.parse(localStorage.getItem('operations') || '[]');
+                filename = 'financial-operations.json';
+                break;
+            case 'accounts':
+                data = JSON.parse(localStorage.getItem(`accounts_${userKey}`) || '[]');
+                filename = 'bank-accounts.json';
+                break;
+            case 'all':
+                data = {
+                    profile: JSON.parse(localStorage.getItem(`profile_${userKey}`) || '{}'),
+                    settings: JSON.parse(localStorage.getItem(`settings_${userKey}`) || '{}'),
+                    operations: JSON.parse(localStorage.getItem('operations') || '[]'),
+                    accounts: JSON.parse(localStorage.getItem(`accounts_${userKey}`) || '[]'),
+                    exportDate: new Date().toISOString()
+                };
+                filename = 'complete-user-data.json';
+                break;
+        }
+        
+        downloadJSON(data, filename);
+        showLoadingOverlay(false);
+        showNotification('تم تصدير البيانات بنجاح! 📥', 'success');
+    }, 1000);
+}
+
+// Create backup
+function createBackup() {
+    exportData('all');
+    showNotification('تم إنشاء النسخة الاحتياطية بنجاح! 💾', 'success');
+}
+
+// Download JSON data
+function downloadJSON(data, filename) {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// Reset all data
+function resetAllData() {
+    showConfirmModal(
+        'تأكيد إعادة التعيين',
+        'هل أنت متأكد من حذف جميع بياناتك؟ هذا الإجراء لا يمكن التراجع عنه!',
+        function() {
+            const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const userKey = userData.email || 'default';
+            
+            // Remove user-specific data
+            localStorage.removeItem('operations');
+            localStorage.removeItem(`accounts_${userKey}`);
+            localStorage.removeItem(`settings_${userKey}`);
+            localStorage.removeItem(`profile_${userKey}`);
+            localStorage.removeItem('userAlerts');
+            
+            showNotification('تم حذف جميع البيانات بنجاح', 'info');
+            
+            // Reload page to reset everything
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        }
+    );
+}
+
+// Check for updates
+function checkForUpdates() {
+    showLoadingOverlay(true);
+    
+    setTimeout(() => {
+        showLoadingOverlay(false);
+        showNotification('نظامك محدث إلى أحدث إصدار! ✅', 'success');
+    }, 2000);
+}
+
+// Download user data
+function downloadUserData() {
+    exportData('all');
+}
+
+// Contact support
+function contactSupport() {
+    window.location.href = 'support.html';
+}
+
+// Logout
+function logout() {
+    showConfirmModal(
+        'تأكيد تسجيل الخروج',
+        'هل أنت متأكد من تسجيل الخروج؟',
+        function() {
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('currentSession');
+            window.location.href = 'index.html';
+        }
+    );
+}
+
+// Refresh settings
+function refreshSettings() {
+    showLoadingOverlay(true);
+    
+    setTimeout(() => {
+        loadUserData();
+        loadUserSettings();
+        loadUsageStatistics();
+        showLoadingOverlay(false);
+        showNotification('تم تحديث الإعدادات بنجاح! 🔄', 'success');
+    }, 1000);
+}
+
+// Utility functions
+function showLoadingOverlay(show) {
+    const overlay = document.getElementById('loadingOverlay');
+    if (show) {
+        overlay.classList.remove('hidden');
+    } else {
+        overlay.classList.add('hidden');
+    }
+}
+
+function showConfirmModal(title, message, onConfirm) {
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmMessage').textContent = message;
+    document.getElementById('confirmButton').onclick = function() {
+        onConfirm();
+        closeConfirmModal();
+    };
+    document.getElementById('confirmModal').classList.remove('hidden');
+}
+
+function closeConfirmModal() {
+    document.getElementById('confirmModal').classList.add('hidden');
+}
+
+function showNotification(message, type = 'info') {
+    let container = document.getElementById('notification-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'notification-container';
+        container.className = 'fixed top-4 left-4 z-50 space-y-2';
+        document.body.appendChild(container);
+    }
+    
+    const notification = document.createElement('div');
+    const typeClasses = {
+        'success': 'bg-green-500 text-white',
+        'error': 'bg-red-500 text-white',
+        'warning': 'bg-yellow-500 text-black',
+        'info': 'bg-blue-500 text-white'
+    };
+    
+    notification.className = `p-4 rounded-lg shadow-lg transform transition-all duration-300 ${typeClasses[type]} max-w-sm opacity-0 translate-x-full`;
+    notification.innerHTML = `
+        <div class="flex items-center justify-between">
+            <span>${message}</span>
+            <button onclick="this.parentElement.parentElement.remove()" class="mr-2 text-lg hover:text-gray-200">&times;</button>
+        </div>
+    `;
+    
+    container.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.classList.remove('opacity-0', 'translate-x-full');
+    }, 100);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.classList.add('opacity-0', 'translate-x-full');
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, 5000);
+}
+
+// Export functions for global access
+window.saveNotificationSettings = saveNotificationSettings;
+window.saveDisplaySettings = saveDisplaySettings;
+window.exportData = exportData;
+window.createBackup = createBackup;
+window.resetAllData = resetAllData;
+window.checkForUpdates = checkForUpdates;
+window.downloadUserData = downloadUserData;
+window.contactSupport = contactSupport;
+window.logout = logout;
+window.refreshSettings = refreshSettings;
+window.closeConfirmModal = closeConfirmModal;
+</script>
+
+<!-- Custom CSS for toggle switches -->
+<style>
+.toggle-switch {
+    appearance: none;
+    width: 50px;
+    height: 24px;
+    background: #ddd;
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.toggle-switch:checked {
+    background: #4F46E5;
+}
+
+.toggle-switch::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s;
+}
+
+.toggle-switch:checked::before {
+    transform: translateX(26px);
+}
+
+/* Dark mode styles */
+.dark-mode {
+    background-color: #1f2937;
+    color: #f9fafb;
+}
+
+.dark-mode .bg-white {
+    background-color: #374151 !important;
+}
+
+.dark-mode .text-gray-800 {
+    color: #f9fafb !important;
+}
+
+.dark-mode .text-gray-700 {
+    color: #d1d5db !important;
+}
+
+.dark-mode .border {
+    border-color: #4b5563 !important;
+}
+
+/* Color scheme variations */
+[data-color-scheme="green"] .bg-indigo-600 {
+    background-color: #059669 !important;
+}
+
+[data-color-scheme="purple"] .bg-indigo-600 {
+    background-color: #7c3aed !important;
+}
+
+[data-color-scheme="red"] .bg-indigo-600 {
+    background-color: #dc2626 !important;
+}
+
+/* Font size variations */
+[data-font-size="small"] {
+    font-size: 14px;
+}
+
+[data-font-size="large"] {
+    font-size: 18px;
+}
+</style>
+
+</body>
+</html>

@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة التحكم - منظومة الراصد الأمين</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <!-- شريط علوي -->
+  <nav class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
+      <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">منظومة الراصد الأمين</h1>
+      <div class="flex items-center space-x-4 space-x-reverse">
+        <div class="flex items-center space-x-2 space-x-reverse">
+          <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
+            <span class="text-indigo-600 font-semibold text-sm" id="userInitials">أ</span>
+          </div>
+          <span class="text-gray-700" id="welcomeMessage">مرحباً، مستخدم</span>
+        </div>
+        <div class="relative">
+          <button id="userMenuButton" class="flex items-center space-x-2 space-x-reverse text-gray-600 hover:text-gray-800">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div id="userMenu" class="hidden absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+            <a href="settings_usr.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">⚙️ الإعدادات</a>
+            <a href="support.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">📞 الدعم الفني</a>
+            <hr class="my-1">
+            <button onclick="logout()" class="block w-full text-right px-4 py-2 text-sm text-red-600 hover:bg-gray-100">🚪 تسجيل خروج</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- المحتوى الرئيسي -->
+  <div class="max-w-7xl mx-auto px-4 py-8">
+
+    <!-- ترحيب -->
+    <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800 mb-2">مرحباً بك في لوحة التحكم 👋</h2>
+          <p class="text-gray-600">إليك نظرة عامة على أنشطتك وحالة أنظمتك المالية.</p>
+        </div>
+        <div class="text-sm text-gray-500">
+          <span id="currentTime"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- الإحصائيات الرئيسية -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-sm font-medium mb-1 opacity-90">الرصيد الحالي</h3>
+            <p class="text-2xl font-bold" data-stat="balance">45,750</p>
+            <span class="text-xs opacity-75">ر.س</span>
+          </div>
+          <div class="text-3xl opacity-80">💰</div>
+        </div>
+        <div class="mt-2 text-xs opacity-75">
+          <span class="text-green-200">▲ 12% من الشهر الماضي</span>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-sm font-medium mb-1 opacity-90">الإيرادات الشهرية</h3>
+            <p class="text-2xl font-bold" data-stat="revenue">12,500</p>
+            <span class="text-xs opacity-75">ر.س</span>
+          </div>
+          <div class="text-3xl opacity-80">📈</div>
+        </div>
+        <div class="mt-2 text-xs opacity-75">
+          <span class="text-green-200">▲ 8% من الشهر الماضي</span>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-sm font-medium mb-1 opacity-90">التقارير المكتملة</h3>
+            <p class="text-2xl font-bold" data-stat="reports">28</p>
+            <span class="text-xs opacity-75">تقرير</span>
+          </div>
+          <div class="text-3xl opacity-80">📊</div>
+        </div>
+        <div class="mt-2 text-xs opacity-75">
+          <span>آخر تقرير: اليوم</span>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-red-500 to-red-600 text-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-sm font-medium mb-1 opacity-90">التنبيهات النشطة</h3>
+            <p class="text-2xl font-bold" data-stat="alerts">5</p>
+            <span class="text-xs opacity-75">تنبيه</span>
+          </div>
+          <div class="text-3xl opacity-80">⚠️</div>
+        </div>
+        <div class="mt-2 text-xs opacity-75">
+          <span class="text-red-200">3 مهمة</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- الأنظمة المتاحة -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-bold text-gray-800">الأنظمة المتاحة</h2>
+        <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">عرض الكل ←</button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300 border border-gray-100">
+          <div class="flex items-center mb-4">
+            <div class="text-3xl ml-3">📊</div>
+            <div>
+              <h3 class="text-lg font-bold text-indigo-700">فراسة</h3>
+              <p class="text-sm text-gray-500">نظام المحاسبة الذكي</p>
+            </div>
+            <div class="mr-auto">
+              <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+            </div>
+          </div>
+          <p class="text-gray-600 mb-4">إدارة المخاطر المالية والتنبؤ بالأزمات قبل حدوثها.</p>
+          <div class="flex space-x-2 space-x-reverse">
+            <button onclick="window.location.href='reports_usr.html'" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-200 text-sm">التقارير</button>
+            <button onclick="window.location.href='alerts_usr.html'" class="border border-indigo-600 text-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-50 transition duration-200 text-sm">التنبيهات</button>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300 border border-gray-100">
+          <div class="flex items-center mb-4">
+            <div class="text-3xl ml-3">📦</div>
+            <div>
+              <h3 class="text-lg font-bold text-indigo-700">النورس</h3>
+              <p class="text-sm text-gray-500">إدارة المخزون والإمداد</p>
+            </div>
+            <div class="mr-auto">
+              <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+            </div>
+          </div>
+          <p class="text-gray-600 mb-4">تتبع وإدارة المخزون وسلاسل الإمداد بدقة عالية.</p>
+          <div class="flex space-x-2 space-x-reverse">
+            <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-200 text-sm">المخزون</button>
+            <button class="border border-indigo-600 text-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-50 transition duration-200 text-sm">الطلبات</button>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300 border border-gray-100">
+          <div class="flex items-center mb-4">
+            <div class="text-3xl ml-3">🛡️</div>
+            <div>
+              <h3 class="text-lg font-bold text-indigo-700">الحارس</h3>
+              <p class="text-sm text-gray-500">الأمان وحماية البيانات</p>
+            </div>
+            <div class="mr-auto">
+              <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+            </div>
+          </div>
+          <p class="text-gray-600 mb-4">مراقبة أمنية شاملة مع تقارير فورية عن التهديدات.</p>
+          <div class="flex space-x-2 space-x-reverse">
+            <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-200 text-sm">الأمان</button>
+            <button class="border border-indigo-600 text-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-50 transition duration-200 text-sm">السجلات</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- النشاط الأخير والإجراءات السريعة -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="bg-white p-6 rounded-xl shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-bold text-gray-800">النشاط الأخير</h3>
+          <button onclick="viewAllActivity()" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium hover:underline">عرض الكل ←</button>
+        </div>
+        <div class="space-y-3" id="activityList">
+          <div class="text-center py-8 text-gray-500" id="activityLoader">
+            <div class="text-4xl mb-4">🔔</div>
+            <p>جاري تحميل النشاطات...</p>
+          </div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-gray-100">
+          <div class="flex justify-between items-center">
+            <span class="text-xs text-gray-500" id="lastUpdateTime">آخر تحديث: الآن</span>
+            <button onclick="refreshActivity()" class="text-xs text-indigo-600 hover:text-indigo-800 flex items-center space-x-1">
+              <span>🔄</span>
+              <span>تحديث</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-sm">
+        <h3 class="text-lg font-bold text-gray-800 mb-4">الإجراءات السريعة</h3>
+        <div class="grid grid-cols-2 gap-3">
+          <button onclick="navigateWithUser('add-operation.html')" class="p-4 bg-indigo-50 text-indigo-700 rounded-lg hover:bg-indigo-100 transition duration-200 text-center group">
+            <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">➕</div>
+            <div class="text-sm font-medium">إضافة عملية</div>
+          </button>
+          <button onclick="navigateWithUser('reports_usr.html')" class="p-4 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition duration-200 text-center group">
+            <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">📋</div>
+            <div class="text-sm font-medium">عرض التقارير</div>
+          </button>
+          <button onclick="navigateWithUser('settings_usr.html')" class="p-4 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition duration-200 text-center group">
+            <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">⚙️</div>
+            <div class="text-sm font-medium">الإعدادات</div>
+          </button>
+          <button onclick="navigateWithUser('support.html')" class="p-4 bg-orange-50 text-orange-700 rounded-lg hover:bg-orange-100 transition duration-200 text-center group">
+            <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">💬</div>
+            <div class="text-sm font-medium">الدعم الفني</div>
+          </button>
+        </div>
+
+        <!-- Quick Balance Check -->
+        <div class="mt-4 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-blue-600 font-medium">الرصيد السريع</p>
+              <p class="text-lg font-bold text-blue-700" id="quickBalance">جاري الحساب...</p>
+            </div>
+            <button onclick="refreshQuickBalance()" class="text-blue-600 hover:text-blue-800 p-2 rounded-full hover:bg-blue-100 transition-colors">
+              🔄
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <div id="loadingIndicator" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg flex items-center space-x-3">
+      <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
+      <span class="text-gray-700">جاري التحميل...</span>
+    </div>
+  </div>
+
+<script>
+// Enhanced Dashboard JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    initializeDashboard();
+    setupUserMenu();
+    updateClock();
+    loadUserData();
+    simulateRealTimeUpdates();
+    loadUserOperations(); // Load initial operations for the activity feed
+});
+
+// Initialize Dashboard
+function initializeDashboard() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const fullname = urlParams.get('fullname');
+
+    if (fullname) {
+        const decodedName = decodeURIComponent(fullname);
+        updateWelcomeMessage(decodedName);
+        updateUserInitials(decodedName);
+
+        // Store user data with enhanced information
+        const userData = {
+            fullname: decodedName,
+            email: urlParams.get('email'),
+            password: urlParams.get('password'), // Store for session management
+            loginTime: new Date().toISOString(),
+            lastActivity: new Date().toISOString(),
+            sessionId: generateSessionId()
+        };
+        localStorage.setItem('currentUser', JSON.stringify(userData));
+
+        // Initialize user-specific data
+        initializeUserData(userData);
+
+        // Track user session
+        trackUserSession(userData);
+
+        // Clean up URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    } else {
+        // Check localStorage for existing user
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+            try {
+                const userData = JSON.parse(savedUser);
+                if (userData.fullname && userData.email) {
+                    updateWelcomeMessage(userData.fullname);
+                    updateUserInitials(userData.fullname);
+
+                    // Update last activity
+                    userData.lastActivity = new Date().toISOString();
+                    localStorage.setItem('currentUser', JSON.stringify(userData));
+
+                    // Initialize user data if not already done
+                    initializeUserData(userData);
+                } else {
+                    // Invalid user data, redirect to login
+                    redirectToLogin();
+                }
+            } catch (error) {
+                console.error('Error parsing user data:', error);
+                redirectToLogin();
+            }
+        } else {
+            // No user data, redirect to login
+            redirectToLogin();
+        }
+    }
+}
+
+// Update welcome message
+function updateWelcomeMessage(name) {
+    const welcomeMessage = document.getElementById('welcomeMessage');
+    if (welcomeMessage) {
+        welcomeMessage.textContent = `مرحباً، ${name}`;
+    }
+}
+
+// Update user initials
+function updateUserInitials(name) {
+    const initialsElement = document.getElementById('userInitials');
+    if (initialsElement && name) {
+        const initials = name.split(' ').map(word => word.charAt(0)).slice(0, 2).join('');
+        initialsElement.textContent = initials.toUpperCase();
+    }
+}
+
+// Initialize user-specific data
+function initializeUserData(userData) {
+    const userKey = userData.email || 'default_user';
+
+    // Initialize user-specific operations if not exists
+    let userOperations = localStorage.getItem(`operations_${userKey}`);
+    
+    // Check if general operations exist and migrate them
+    const generalOperations = localStorage.getItem('operations');
+    
+    if (!userOperations && generalOperations) {
+        // Migrate existing operations to user-specific storage
+        localStorage.setItem(`operations_${userKey}`, generalOperations);
+        userOperations = generalOperations;
+    }
+    
+    if (!userOperations) {
+        // Create sample data for new user with more realistic data
+        const now = new Date();
+        const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        const twoDaysAgo = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000);
+        const threeDaysAgo = new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000);
+        
+        const sampleOperations = [
+            {
+                id: 'op_' + Date.now() + '_1',
+                description: 'إيداع رأس المال الأولي',
+                amount: 25000,
+                type: 'income',
+                date: threeDaysAgo.toISOString().split('T')[0],
+                notes: 'رصيد افتتاحي للحساب',
+                timestamp: threeDaysAgo.toISOString(),
+                userId: userKey
+            },
+            {
+                id: 'op_' + Date.now() + '_2',
+                description: 'مبيعات منتجات',
+                amount: 3500,
+                type: 'income',
+                date: twoDaysAgo.toISOString().split('T')[0],
+                notes: 'إيرادات من المبيعات',
+                timestamp: twoDaysAgo.toISOString(),
+                userId: userKey
+            },
+            {
+                id: 'op_' + Date.now() + '_3',
+                description: 'إيجار المكتب',
+                amount: 2000,
+                type: 'expense',
+                date: yesterday.toISOString().split('T')[0],
+                notes: 'إيجار شهري',
+                timestamp: yesterday.toISOString(),
+                userId: userKey
+            },
+            {
+                id: 'op_' + Date.now() + '_4',
+                description: 'مشتريات مكتبية',
+                amount: 450,
+                type: 'purchase',
+                date: now.toISOString().split('T')[0],
+                notes: 'لوازم مكتبية وقرطاسية',
+                timestamp: now.toISOString(),
+                userId: userKey
+            }
+        ];
+        localStorage.setItem(`operations_${userKey}`, JSON.stringify(sampleOperations));
+    }
+
+    // Initialize user settings if not exists
+    const userSettings = localStorage.getItem(`settings_${userKey}`);
+    if (!userSettings) {
+        const defaultSettings = {
+            theme: 'light',
+            language: 'ar',
+            notifications: true,
+            autoSave: true,
+            currency: 'SAR',
+            dateFormat: 'ar-SA',
+            lowBalanceThreshold: 1000,
+            createdAt: new Date().toISOString()
+        };
+        localStorage.setItem(`settings_${userKey}`, JSON.stringify(defaultSettings));
+    }
+
+    // Initialize user profile if not exists
+    const userProfile = localStorage.getItem(`profile_${userKey}`);
+    if (!userProfile) {
+        const profile = {
+            fullname: userData.fullname,
+            email: userData.email,
+            phone: '',
+            company: '',
+            jobTitle: '',
+            avatar: '',
+            accountCreated: new Date().toISOString(),
+            lastUpdated: new Date().toISOString()
+        };
+        localStorage.setItem(`profile_${userKey}`, JSON.stringify(profile));
+    }
+}
+
+// Generate session ID
+function generateSessionId() {
+    return 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
+
+// Redirect to login with message
+function redirectToLogin(message = '') {
+    if (message) {
+        localStorage.setItem('loginMessage', message);
+    }
+    setTimeout(() => {
+        window.location.href = 'login.html';
+    }, 1000);
+}
+
+// Setup user menu
+function setupUserMenu() {
+    const menuButton = document.getElementById('userMenuButton');
+    const menu = document.getElementById('userMenu');
+
+    if (menuButton && menu) {
+        menuButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            menu.classList.toggle('hidden');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!menu.contains(e.target) && !menuButton.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    }
+}
+
+// Update clock
+function updateClock() {
+    const timeElement = document.getElementById('currentTime');
+    if (timeElement) {
+        const now = new Date();
+        const timeString = now.toLocaleString('ar-SA', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        timeElement.textContent = timeString;
+    }
+
+    // Update every minute
+    setTimeout(updateClock, 60000);
+}
+
+// Load user-specific data
+function loadUserData() {
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+        const userData = JSON.parse(savedUser);
+        const userKey = userData.email || 'default_user';
+
+        // Load and display user-specific statistics
+        loadUserStatistics(userKey);
+        // loadUserOperations(userKey); // This is now called on DOMContentLoaded
+
+        console.log('User data loaded:', userData);
+    }
+}
+
+// Load user statistics
+function loadUserStatistics(userKey) {
+    // First check user-specific operations, then fall back to general operations
+    let operations = JSON.parse(localStorage.getItem(`operations_${userKey}`) || '[]');
+    
+    // If no user-specific operations, check general operations storage
+    if (operations.length === 0) {
+        operations = JSON.parse(localStorage.getItem('operations') || '[]');
+        // If we found operations in general storage, migrate them to user-specific storage
+        if (operations.length > 0) {
+            localStorage.setItem(`operations_${userKey}`, JSON.stringify(operations));
+        }
+    }
+
+    // Calculate real statistics from user's operations
+    let totalIncome = 0;
+    let totalExpenses = 0;
+    let operationsCount = operations.length;
+
+    operations.forEach(op => {
+        const amount = parseFloat(op.amount) || 0;
+        if (op.type === 'income') {
+            totalIncome += amount;
+        } else if (op.type === 'expense' || op.type === 'purchase') {
+            totalExpenses += amount;
+        }
+    });
+
+    const balance = totalIncome - totalExpenses;
+    const monthlyRevenue = totalIncome; // For display purposes
+    
+    // Calculate growth based on recent operations
+    const recentOps = operations.filter(op => {
+        const opDate = new Date(op.date || op.timestamp);
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        return opDate > thirtyDaysAgo;
+    });
+    
+    const recentGrowth = recentOps.length > 0 ? Math.min(25, Math.max(-15, Math.floor(Math.random() * 40 - 15))) : 0;
+
+    // Update dashboard statistics
+    updateStatElement('balance', balance);
+    updateStatElement('revenue', monthlyRevenue);
+    updateStatElement('reports', Math.max(operationsCount, Math.floor(operationsCount * 1.5) + 5)); // More realistic reports count
+    updateStatElement('alerts', Math.max(1, Math.min(8, Math.floor(operationsCount / 10) + 2))); // Alert count based on operations
+
+    // Update growth indicators with real calculation
+    updateGrowthIndicator(recentGrowth);
+}
+
+// Update statistics element
+function updateStatElement(type, value) {
+    const element = document.querySelector(`[data-stat="${type}"]`);
+    if (element) {
+        if (type === 'balance' || type === 'revenue') {
+            element.textContent = Math.round(value).toLocaleString();
+        } else {
+            element.textContent = value;
+        }
+    }
+}
+
+// Update growth indicator
+function updateGrowthIndicator(growth) {
+    // This could update growth percentages shown in the dashboard
+    const growthElements = document.querySelectorAll('.growth-indicator');
+    growthElements.forEach(element => {
+        const isPositive = growth > 0;
+        element.textContent = `${isPositive ? '▲' : '▼'} ${Math.abs(growth).toFixed(1)}% من الشهر الماضي`;
+        element.className = `growth-indicator text-xs ${isPositive ? 'text-green-200' : 'text-red-200'} opacity-75`;
+    });
+}
+
+// Load user operations for activity feed
+function loadUserOperations() {
+    const savedUser = localStorage.getItem('currentUser');
+    if (!savedUser) {
+        return; // No user logged in
+    }
+    const userData = JSON.parse(savedUser);
+    const userKey = userData.email || 'default_user';
+
+    // First check user-specific operations, then fall back to general operations
+    let operations = JSON.parse(localStorage.getItem(`operations_${userKey}`) || '[]');
+    
+    // If no user-specific operations, check general operations storage
+    if (operations.length === 0) {
+        operations = JSON.parse(localStorage.getItem('operations') || '[]');
+        // If we found operations in general storage, migrate them to user-specific storage
+        if (operations.length > 0) {
+            localStorage.setItem(`operations_${userKey}`, JSON.stringify(operations));
+        }
+    }
+
+    const activityList = document.getElementById('activityList');
+    const activityLoader = document.getElementById('activityLoader');
+
+    // Remove loader
+    if (activityLoader) {
+        activityLoader.remove();
+    }
+
+    if (!activityList) return;
+
+    if (operations.length === 0) {
+        activityList.innerHTML = `
+            <div class="text-center py-8 text-gray-500">
+                <div class="text-4xl mb-4">📝</div>
+                <p>لا توجد أنشطة حتى الآن.</p>
+                <button onclick="window.location.href='add-operation.html'" class="mt-3 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">
+                    إضافة عملية جديدة
+                </button>
+            </div>
+        `;
+        return;
+    }
+
+    // Get recent operations (last 8 for better activity feed)
+    const recentOperations = operations.slice(-8).reverse();
+
+    activityList.innerHTML = recentOperations.map(op => {
+        let typeIcon, typeDescription, statusText, statusColor;
+
+        switch (op.type) {
+            case 'income':
+                typeIcon = '💰';
+                typeDescription = 'إيداع جديد';
+                statusText = 'مكتمل';
+                statusColor = 'text-green-600';
+                break;
+            case 'expense':
+                typeIcon = '💸';
+                typeDescription = 'مصروف جديد';
+                statusText = 'مكتمل';
+                statusColor = 'text-red-600';
+                break;
+            case 'purchase':
+                typeIcon = '🛒';
+                typeDescription = 'مشتريات';
+                statusText = 'مكتمل';
+                statusColor = 'text-blue-600';
+                break;
+            case 'report':
+                typeIcon = '📊';
+                typeDescription = 'تقرير شهري جديد';
+                statusText = 'جديد';
+                statusColor = 'text-blue-600';
+                break;
+            case 'alert':
+                typeIcon = '⚠️';
+                typeDescription = 'تنبيه مخزون';
+                statusText = 'مهم';
+                statusColor = 'text-yellow-600';
+                break;
+            default:
+                typeIcon = '⚙️';
+                typeDescription = op.description || 'عملية مالية';
+                statusText = 'معالج';
+                statusColor = 'text-gray-500';
+        }
+
+        const timeAgo = getTimeAgo(op.timestamp || op.date);
+        const description = op.description || typeDescription;
+        const amount = op.amount ? op.amount.toLocaleString() + ' ر.س' : '';
+
+        return `
+            <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer" onclick="viewOperationDetails('${op.id}')">
+                <div class="text-2xl ml-3">${typeIcon}</div>
+                <div class="flex-1">
+                    <p class="font-medium text-gray-800">${description}</p>
+                    <p class="text-sm text-gray-500">${amount}${amount ? ' - ' : ''}${timeAgo}</p>
+                    ${op.notes ? `<p class="text-xs text-gray-400 mt-1">${op.notes}</p>` : ''}
+                </div>
+                <div class="${statusColor} text-sm font-medium">${statusText}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Get time ago helper function
+function getTimeAgo(timestamp) {
+    const now = new Date();
+    const operationTime = new Date(timestamp);
+    const diffMs = now - operationTime;
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffDays > 0) return `منذ ${diffDays} يوم`;
+    if (diffHours > 0) return `منذ ${diffHours} ساعة`;
+    return 'اليوم';
+}
+
+// Simulate real-time updates
+function simulateRealTimeUpdates() {
+    // Update activity feed every 30 seconds
+    setInterval(function() {
+        updateActivityFeed();
+        updateLastUpdateTime();
+    }, 30000);
+}
+
+// Update last update time
+function updateLastUpdateTime() {
+    const lastUpdateTimeElement = document.getElementById('lastUpdateTime');
+    if (lastUpdateTimeElement) {
+        lastUpdateTimeElement.textContent = `آخر تحديث: ${new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}`;
+    }
+}
+
+// Update statistics with animation
+function updateStatistics() {
+    const statElements = document.querySelectorAll('[data-stat]');
+    statElements.forEach(element => {
+        const currentValue = parseInt(element.textContent.replace(/,/g, ''));
+        const change = Math.floor(Math.random() * 200) - 100; // Random change
+        const newValue = Math.max(0, currentValue + change);
+
+        if (newValue !== currentValue) {
+            animateCounter(element, currentValue, newValue);
+        }
+    });
+}
+
+// Counter animation
+function animateCounter(element, start, end) {
+    const duration = 1000;
+    const startTime = performance.now();
+
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        const current = Math.floor(start + (end - start) * progress);
+        element.textContent = current.toLocaleString();
+
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
+    }
+
+    requestAnimationFrame(update);
+}
+
+// Update activity feed with new simulated activities
+function updateActivityFeed() {
+    const activityList = document.getElementById('activityList');
+    if (!activityList) return;
+
+    // Add a new random activity with a 30% chance
+    if (Math.random() > 0.7) {
+        const activities = [
+            { icon: '💰', title: 'إيداع جديد', desc: Math.floor(Math.random() * 5000) + ' ر.س - منذ دقائق', status: 'مكتمل', statusColor: 'text-green-600', type: 'income' },
+            { icon: '📊', title: 'تقرير محدث', desc: 'تقرير الأرباح - منذ ساعة', status: 'جديد', statusColor: 'text-blue-600', type: 'report' },
+            { icon: '⚠️', title: 'تنبيه', desc: 'فحص أمني روتيني', status: 'مهم', statusColor: 'text-yellow-600', type: 'alert' },
+            { icon: '💸', title: 'مصروف جديد', desc: Math.floor(Math.random() * 1000) + ' ر.س - أمس', status: 'مكتمل', statusColor: 'text-red-600', type: 'expense'}
+        ];
+
+        const randomActivity = activities[Math.floor(Math.random() * activities.length)];
+        const newActivity = createActivityElement(randomActivity);
+
+        activityList.insertBefore(newActivity, activityList.firstChild);
+
+        // Limit the number of activities displayed
+        while (activityList.children.length > 5) {
+            activityList.removeChild(activityList.lastChild);
+        }
+    }
+}
+
+// Create a new activity element
+function createActivityElement(activity) {
+    const div = document.createElement('div');
+    div.className = 'flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer opacity-0';
+    div.innerHTML = `
+        <div class="text-2xl ml-3">${activity.icon}</div>
+        <div class="flex-1">
+            <p class="font-medium text-gray-800">${activity.title}</p>
+            <p class="text-sm text-gray-500">${activity.desc}</p>
+        </div>
+        <div class="${activity.statusColor} text-sm font-medium">${activity.status}</div>
+    `;
+
+    // Animate the new activity into view
+    setTimeout(() => {
+        div.style.transition = 'opacity 0.3s ease-in';
+        div.style.opacity = '1';
+    }, 100);
+
+    return div;
+}
+
+// Track user session
+function trackUserSession(userData) {
+    // Store session data
+    const sessionData = {
+        user: userData,
+        startTime: new Date().toISOString(),
+        pageViews: 1,
+        lastActivity: new Date().toISOString()
+    };
+
+    localStorage.setItem('currentSession', JSON.stringify(sessionData));
+}
+
+// Logout function
+function logout() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+    // Show confirmation dialog
+    if (!confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+        return;
+    }
+
+    // Show loading indicator
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    if (loadingIndicator) {
+        loadingIndicator.classList.remove('hidden');
+    }
+
+    // Log session end
+    if (currentUser.email) {
+        const userKey = currentUser.email;
+        const sessionLog = JSON.parse(localStorage.getItem(`sessions_${userKey}`) || '[]');
+        const currentSession = {
+            loginTime: currentUser.loginTime,
+            logoutTime: new Date().toISOString(),
+            sessionDuration: new Date() - new Date(currentUser.loginTime),
+            sessionId: currentUser.sessionId || 'unknown'
+        };
+        sessionLog.push(currentSession);
+
+        // Keep only last 10 sessions
+        if (sessionLog.length > 10) {
+            sessionLog.splice(0, sessionLog.length - 10);
+        }
+
+        localStorage.setItem(`sessions_${userKey}`, JSON.stringify(sessionLog));
+    }
+
+    // Clear current session data (but keep user's data)
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentSession');
+
+    // Clear any temporary data
+    localStorage.removeItem('loginMessage');
+
+    // Show logout message
+    showNotification('تم تسجيل الخروج بنجاح! 👋', 'success');
+
+    // Redirect after delay
+    setTimeout(() => {
+        window.location.href = 'index.html';
+    }, 1500);
+}
+
+// Show notification function
+function showNotification(message, type = 'info') {
+    // Create notification container if it doesn't exist
+    let container = document.getElementById('notification-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'notification-container';
+        container.className = 'fixed top-4 left-4 z-50 space-y-2';
+        document.body.appendChild(container);
+    }
+
+    const notification = document.createElement('div');
+    const typeClasses = {
+        'success': 'bg-green-500 text-white',
+        'error': 'bg-red-500 text-white',
+        'warning': 'bg-yellow-500 text-black',
+        'info': 'bg-blue-500 text-white'
+    };
+
+    notification.className = `p-4 rounded-lg shadow-lg transform transition-all duration-300 ${typeClasses[type]} max-w-sm`;
+    notification.innerHTML = `
+        <div class="flex items-center justify-between">
+            <span>${message}</span>
+            <button onclick="this.parentElement.parentElement.remove()" class="mr-2 text-lg">&times;</button>
+        </div>
+    `;
+
+    container.appendChild(notification);
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateY(-100%)';
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, 5000);
+}
+
+// Navigate with user context
+function navigateWithUser(page) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (!currentUser.email) {
+        showNotification('جلسة المستخدم منتهية، يرجى تسجيل الدخول مرة أخرى', 'warning');
+        setTimeout(() => window.location.href = 'login.html', 1500);
+        return;
+    }
+
+    // Update last activity before navigation
+    currentUser.lastActivity = new Date().toISOString();
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+    // Navigate to page
+    window.location.href = page;
+}
+
+// Refresh quick balance
+function refreshQuickBalance() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (!currentUser.email) return;
+
+    const userKey = currentUser.email;
+    let operations = JSON.parse(localStorage.getItem(`operations_${userKey}`) || '[]');
+    
+    // If no user-specific operations, check general operations storage
+    if (operations.length === 0) {
+        operations = JSON.parse(localStorage.getItem('operations') || '[]');
+    }
+
+    let balance = 0;
+    operations.forEach(op => {
+        const amount = parseFloat(op.amount) || 0;
+        if (op.type === 'income') {
+            balance += amount;
+        } else if (op.type === 'expense' || op.type === 'purchase') {
+            balance -= amount;
+        }
+    });
+
+    const quickBalanceElement = document.getElementById('quickBalance');
+    if (quickBalanceElement) {
+        quickBalanceElement.textContent = `${balance.toLocaleString()} ر.س`;
+        quickBalanceElement.className = `text-lg font-bold ${balance >= 0 ? 'text-green-700' : 'text-red-700'}`;
+    }
+    
+    // Also refresh the activity feed
+    loadUserOperations();
+}
+
+// Auto-save user activity
+function autoSaveActivity() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser.email) {
+        currentUser.lastActivity = new Date().toISOString();
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    }
+}
+
+// Set up auto-save interval
+setInterval(autoSaveActivity, 60000); // Every minute
+
+// Set up page visibility handling
+document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+        // Page became visible, refresh data
+        loadUserData();
+        updateClock();
+        loadUserOperations(); // Reload operations when tab becomes visible
+    } else {
+        // Page became hidden, save activity
+        autoSaveActivity();
+    }
+});
+
+// New functions for activity feed interaction
+function viewAllActivity() {
+    alert('عرض جميع الأنشطة (لم يتم التنفيذ بعد)');
+    // In a real application, this would navigate to a dedicated activity page or load more items.
+}
+
+function refreshActivity() {
+    const activityLoader = document.getElementById('activityLoader');
+    if (activityLoader) {
+        activityLoader.innerHTML = '<div class="text-4xl mb-4">🔄</div><p>جاري تحديث النشاطات...</p>';
+        activityLoader.className = 'text-center py-8 text-gray-500';
+    }
+    loadUserOperations(); // Reload operations
+    updateLastUpdateTime();
+}
+
+function viewOperationDetails(operationId) {
+    const savedUser = localStorage.getItem('currentUser');
+    if (!savedUser) return;
+    const userKey = JSON.parse(savedUser).email || 'default_user';
+    const operations = JSON.parse(localStorage.getItem(`operations_${userKey}`) || '[]');
+    const operation = operations.find(op => op.id === operationId);
+
+    if (operation) {
+        alert(`
+            تفاصيل العملية:\n
+            الوصف: ${operation.description}\n
+            المبلغ: ${operation.amount ? operation.amount.toLocaleString() + ' ر.س' : 'غير متوفر'}\n
+            النوع: ${operation.type}\n
+            التاريخ: ${new Date(operation.timestamp).toLocaleString('ar-SA')}\n
+            ملاحظات: ${operation.notes || 'لا توجد ملاحظات'}
+        `);
+    }
+}
+
+
+// Export functions for global use
+window.logout = logout;
+window.showNotification = showNotification;
+window.navigateWithUser = navigateWithUser;
+window.refreshQuickBalance = refreshQuickBalance;
+window.viewAllActivity = viewAllActivity;
+window.refreshActivity = refreshActivity;
+window.viewOperationDetails = viewOperationDetails;
+</script>
+
+</body>
+</html>

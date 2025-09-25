@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة الإدارة - الراصد الأمين</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <!-- شريط علوي -->
+  <nav class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold">لوحة الإدارة</h1>
+  </nav>
+
+  <div class="flex">
+    <!-- شريط جانبي -->
+    <aside class="w-64 bg-white shadow-md h-screen p-6">
+      <h2 class="text-lg font-bold text-gray-700 mb-6">القائمة</h2>
+      <ul class="space-y-4">
+        <li><a href="#" class="block text-gray-600 hover:text-indigo-600">📊 لوحة التحكم</a></li>
+        <li><a href="users.html" class="block text-gray-600 hover:text-indigo-600">👥 إدارة المستخدمين</a></li>
+        <li><a href="reports.html" class="block text-gray-600 hover:text-indigo-600">📑 التقارير</a></li>
+        <li><a href="alerts.html" class="block text-gray-600 hover:text-indigo-600">⚠️ التنبيهات</a></li>
+        <li><a href="settings.html" class="block text-gray-600 hover:text-indigo-600">⚙️ إعدادات</a></li>
+      </ul>
+    </aside>
+
+    <!-- محتوى -->
+    <main class="flex-1 p-8">
+
+      <!-- إحصائيات -->
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">الإحصائيات</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div class="bg-white p-6 rounded-xl shadow">
+          <h3 class="text-lg font-semibold text-gray-600 mb-2">عدد المستخدمين</h3>
+          <p class="text-3xl font-bold text-indigo-600">120</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow">
+          <h3 class="text-lg font-semibold text-gray-600 mb-2">عدد التقارير</h3>
+          <p class="text-3xl font-bold text-green-600">350</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow">
+          <h3 class="text-lg font-semibold text-gray-600 mb-2">عدد التنبيهات</h3>
+          <p class="text-3xl font-bold text-red-600">15</p>
+        </div>
+      </div>
+
+      <!-- آخر التنبيهات -->
+      <h2 class="text-xl font-bold text-gray-800 mb-4">آخر التنبيهات</h2>
+      <div class="bg-white p-6 rounded-xl shadow mb-10">
+        <ul class="space-y-3 text-gray-700">
+          <li>⚠️ محاولة دخول غير مصرح - 20/08/2025</li>
+          <li>ℹ️ تحديث النظام اكتمل بنجاح - 18/08/2025</li>
+          <li>⚠️ تقرير مالي به تناقض - 15/08/2025</li>
+        </ul>
+      </div>
+
+      <!-- إدارة الأنظمة -->
+      <h2 class="text-xl font-bold text-gray-800 mb-4">إدارة الأنظمة</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow">
+          <h3 class="text-lg font-bold text-indigo-700 mb-2">📊 فراسة</h3>
+          <p class="text-gray-600 mb-4">نظام المحاسبة والذكاء المالي.</p>
+          <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">إدارة</button>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow">
+          <h3 class="text-lg font-bold text-indigo-700 mb-2">📦 النورس</h3>
+          <p class="text-gray-600 mb-4">نظام إدارة المخزون وسلاسل الإمداد.</p>
+          <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">إدارة</button>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow">
+          <h3 class="text-lg font-bold text-indigo-700 mb-2">🛡️ الحارس</h3>
+          <p class="text-gray-600 mb-4">نظام الحماية والأمن السيبراني.</p>
+          <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">إدارة</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>
